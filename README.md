@@ -6,12 +6,12 @@ ThinkPHP 5.0
 [![Latest Unstable Version](https://poser.pugx.org/topthink/think/v/unstable)](https://packagist.org/packages/topthink/think)
 [![License](https://poser.pugx.org/topthink/think/license)](https://packagist.org/packages/topthink/think)
 
-ThinkPHP5.0.24
+ThinkPHP5在保持快速开发和大道至简的核心理念不变的同时，PHP版本要求提升到5.4，对已有的CBD模式做了更深的强化，优化核心，减少依赖，基于全新的架构思想和命名空间实现，是ThinkPHP突破原有框架思路的颠覆之作，其主要特性包括：
 
- + 描述XXX
+ +众多PHP功能demo
+[README.md文件常见使用方式](https://blog.csdn.net/lxh123456789asd/article/details/80826948)
 
-
-> 运行环境要求PHP5.4以上。
+>运行环境要求PHP5.4以上。
 
 详细开发文档参考 [ThinkPHP5完全开发手册](http://www.kancloud.cn/manual/thinkphp5)
 
@@ -73,7 +73,7 @@ www  WEB部署目录（或者子目录）
 
 ## 命名规范
 
-遵循PSR-2命名规范和PSR-4自动加载规范，并且注意如下规范：
+`ThinkPHP5`遵循PSR-2命名规范和PSR-4自动加载规范，并且注意如下规范：
 
 ### 目录和文件
 
