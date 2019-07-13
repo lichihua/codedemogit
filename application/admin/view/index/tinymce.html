@@ -1,0 +1,182 @@
+{extend name="public/base" /}
+
+{block name="title"}TinyMCE{/block}
+{block name="pagetitle"}TinyMCE{/block}
+{block name="pagecss"}
+    <!-- CSS -->
+    <link type="text/css" href="" rel="stylesheet">
+
+{/block}
+{block name="pagejs"}
+    <!-- JavaScript -->
+    <script type="text/javascript" src="__VENDOR__/tinymce/tinymce.min.js"></script>
+    <script type="text/javascript" src="__VENDOR__/tinymce/langs/zh_CN.js"></script>
+{/block}
+
+{block name="customjs"} 
+<script>
+var plugins="lists image media table wordcount code fullscreen help  toc fullpage autosave nonbreaking insertdatetime visualchars visualblocks searchreplace spellchecker pagebreak link charmap paste print preview hr anchor bdmap codesample";
+var toolbar=[
+    'newdocument undo redo | formatselect visualaid|cut copy paste selectall| bold italic underline strikethrough |codeformat blockformats| superscript subscript  | forecolor backcolor | alignleft aligncenter alignright alignjustify | outdent indent |  removeformat bdmap codesample',
+
+    'code  bullist numlist | lists image media table link |fullscreen help toc fullpage restoredraft nonbreaking insertdatetime visualchars visualblocks searchreplace spellchecker pagebreak anchor charmap  pastetext print preview hr',
+];
+tinymce.init({
+    selector: '#elm1',
+    language: "zh_CN",
+    height:500,
+    resize: false,//关闭拉伸(固定大小)
+    statusbar: false,//隐藏编辑器最底下、左侧显示dom信息、右侧显示Tiny版权链接和调整大小的那一条的状态栏
+    skin:"oxide",
+    //使用设置可编辑区域的样式content_css。样式应该是网站CSS的简化版本。使用标题样式（H1-H6），表格布局，边距，元素周围的填充（图像，段落）等
+    content_css: '__VENDOR__/tinymce/skins/content/writer/content.min.css,__VENDOR__/tinymce/skins/content/writer/content.min.css',
+    //skin_url: "__VENDOR__/tinymce/skins/ui/oxide-dark",
+    //skin_url: "__VENDOR__/tinymce/skins/ui/oxide",
+    //toolbar:"undo redo",//显示功能按钮
+    toolbar:toolbar,//显示功能按钮
+    theme: "silver",
+    //theme: "mobile",
+    plugins:plugins,
+    a_plugin_option: false,
+    aaa:true,
+   
+    menubar: true,//启用顶部菜单栏
+    //自定义菜单包含复制粘贴剪切
+    menu: {
+        view: {title: 'hello', items: 'cut copy paste'}
+    },
+    elementpath: true,//
+    //inline: true,  内联 
+    /*---------------------------图片上传----------------------------*/
+    //首先toolbar和plugins加上 image
+    //配置上传地址方法1  
+    //images_upload_url: '{:url('tinymce_img_upload')}',
+    //图片的完整路径是images_upload_base_path + location返回的路径
+    //images_upload_base_path: '',//默认返回的是20190613112104_289.png这种文件名的话则可以在这加上文件名前面的基本路径
+    //images_upload_credentials:false,//对images_upload_url中指定的地址调用时是否传递cookie等跨域的凭据。值为布尔值，默认false
+
+    //配置上传地址方法2手动调用 此选项允许你使用自定义函数代替TinyMCE来处理上传操作。该自定义函数需提供三个参数：blobInfo、成功回调和失败回调
+    images_upload_handler:function(blobInfo, succFun, failFun){
+        var xhr, formData;
+        var file = blobInfo.blob();//转化为易于理解的file对象
+        xhr = new XMLHttpRequest();
+        xhr.withCredentials = false;
+        xhr.open('POST', "{:url('tinymce_img_upload')}");
+        xhr.onload = function() {
+            var json;
+            if (xhr.status != 200) {
+                failFun('HTTP Error: ' + xhr.status);
+                return;
+            }
+            json = JSON.parse(xhr.responseText);
+            if (!json || typeof json.location != 'string') {
+                failFun('Invalid JSON: ' + xhr.responseText);
+                return;
+            }
+            succFun(json.location);
+        };
+        formData = new FormData();
+        formData.append('file', file, file.name );//此处与源文档不一样
+        xhr.send(formData);
+    },
+    /*---------------------------图片上传结束----------------------------*/    
+        /*---------------------------文件上传开始----------------------------*/   
+        file_picker_callback: function(callback, value, meta) {
+            
+        },
+        /*---------------------------文件上传结束----------------------------*/   
+});
+
+function doy(){
+    var tmp= tinymce.get('elm1').getContent();      //此函数可获得编辑框内容   
+    //var tmp2=tinymce.get('elm2').getContent();
+    $('textarea').hide()
+    $('.activityshow_box').show();
+    $('.activityshow_box').append(tmp);
+    tinymce.activeEditor.setContent("<p style='color:red;'>这只是个测试</p>");     //设置编辑框内容   Jquery.text('内容')方法也可以达到设置编辑框内容目的
+    alert(tmp);
+    //alert(tmp2);
+}
+
+
+tinymce.init({
+    selector: '#file_elm1',
+    language:'zh_CN',
+    plugins: 'link',
+    toolbar: 'link',
+    file_picker_types: 'file image media',
+    file_picker_callback: function (callback, value, meta) {
+        //要先模拟出一个input用于上传本地文件
+        var input = document.createElement('input');
+            input.setAttribute('type', 'file');
+            //你可以给input加accept属性来限制上传的文件类型
+            //例如：input.setAttribute('accept', '.jpg,.png');
+        input.click();
+        input.onchange = function() {
+            var file = this.files[0];
+
+            var xhr, formData;
+            console.log(file.name);
+            xhr = new XMLHttpRequest();
+            xhr.withCredentials = false;
+            xhr.open('POST', "{:url('tinymce_img_upload')}");
+            xhr.onload = function() {
+                var json;
+                if (xhr.status != 200) {
+                    failure('HTTP Error: ' + xhr.status);
+                    return;
+                }
+                json = JSON.parse(xhr.responseText);
+                if (!json || typeof json.location != 'string') {
+                    failure('Invalid JSON: ' + xhr.responseText);
+                    return;
+                }
+                callback(json.location);
+            };
+            formData = new FormData();
+            formData.append('file', file, file.name );
+            xhr.send(formData);
+
+            //下方被注释掉的是官方的一个例子
+            //放到下面给大家参考
+            
+            /*var reader = new FileReader();
+            reader.onload = function () {
+                // Note: Now we need to register the blob in TinyMCEs image blob
+                // registry. In the next release this part hopefully won't be
+                // necessary, as we are looking to handle it internally.
+                var id = 'blobid' + (new Date()).getTime();
+                var blobCache =  tinymce.activeEditor.editorUpload.blobCache;
+                var base64 = reader.result.split(',')[1];
+                var blobInfo = blobCache.create(id, file, base64);
+                blobCache.add(blobInfo);
+
+                // call the callback and populate the Title field with the file name
+                callback(blobInfo.blobUri(), { title: file.name });
+            };
+            reader.readAsDataURL(file);*/
+        };
+    },
+});
+</script>
+
+{/block}
+
+{block name="main"}
+	
+    <!-- /.row -->
+    <div class="row">
+        <a href="https://www.tiny.cloud/get-tiny/self-hosted/">官方下载地址</a>
+        <a href="http://tinymce.ax-z.cn/">中文文档</a>
+        <h1 class="editable" id="elm2">这是标题，编辑工具栏隐藏</h1>
+        <textarea id="elm1">文本内容哈</textarea>     
+       <!--  <div id="elm1">文本内容哈</div>      -->
+        <input type="button" onclick="doy()"/> 
+    </div>
+    <div class="row">
+        <h1 class="file_editable" id="file_elm2">文件上传</h1>
+        <textarea id="file_elm1">文本内容哈</textarea>     
+    </div>
+    <!-- /.row -->
+
+{/block}

@@ -2,3 +2,7 @@
 composer.lock
 *.log
 thinkphp
+#取反 .gitignore以外文件将会被跟踪提交
+!.gitignore
+das
+/ueditor

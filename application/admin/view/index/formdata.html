@@ -1,0 +1,156 @@
+{extend name="public/base" /}
+
+{block name="title"}FormData{/block}
+{block name="pagetitle"}FormData{/block}
+{block name="pagecss"}
+    <!-- CSS -->
+    <link type="text/css" href="" rel="stylesheet">
+
+{/block}
+{block name="pagejs"}
+    <!-- JavaScript -->
+    <script type="text/javascript" src=""></script>
+{/block}
+
+{block name="customjs"} 
+<script>
+/**
+ * 获取指定文件的base64编码
+ * @param  object   File       Blob 或 File 对象       这里是file对象
+ * @param  Function callback   返回数据的回调函数
+ * @return string              返回base64编码
+ */
+function getBase64(File,callback){
+    var reader = new FileReader();                  //IE10+
+    var AllowImgFileSize = 2100000;                 //上传图片最大值(单位字节)（ 2 M = 2097152 B ）超过2M上传失败
+    var File = File||$("#file").get(0).files[0];    //获取上传的文件对象
+    if (File) {
+
+        //读取指定的 Blob 或 File 对象  触发loadend 事件 并将图片的base64编码赋值给result
+        reader.readAsDataURL(File);
+        //reader.readAsText(File)
+        //异步通信 回调函数返回
+        reader.onload = function (e) {
+           //var ImgFileSize = reader.result.substring(reader.result.indexOf(",") + 1).length;//截取base64码部分（可选可不选，需要与后台沟通）
+           if (AllowImgFileSize != 0 && AllowImgFileSize < reader.result.length) {
+                alert( '上传失败，请上传不大于2M的图片！');
+                return;
+            }else{
+                var base64Data=reader.result;
+                //返回base64编码
+                callback(base64Data);
+            }
+        }
+    }  
+  
+}
+
+/*2:转bob*/
+/**
+ * 将以base64的图片url数据转换为Blob
+ * @param base64    用url方式表示的base64图片数据
+ * @return blob     返回blob对象           
+ */
+function convertBase64UrlToBlob(base64){
+    var type =base64.split(",")[0].match(/:(.*?);/)[1];//提取base64头的type如 'image/png'     
+    var bytes=window.atob(base64.split(',')[1]);//去掉url的头，并转换为byte (atob:编码 btoa:解码)
+
+    //处理异常,将ascii码小于0的转换为大于0 
+    var ab = new ArrayBuffer(bytes.length);//通用的、固定长度(bytes.length)的原始二进制数据缓冲区对象
+    var ia = new Uint8Array(ab);
+    for (var i = 0; i < bytes.length; i++) {
+        ia[i] = bytes.charCodeAt(i);
+    }
+    return new Blob( [ab] , {type :type});
+}
+
+
+/**
+ * ajax上传图片文件
+ * @param  [type] base64Codes  图片的base64编码
+ * @return {[type]}             [description]
+ */
+function sumitImageFile(base64Codes,url){
+    if(!base64Codes){
+        alert("缺少base64数据")
+    }
+    var formData = new FormData(); //这里连带form里的其他参数也一起提交了,如果不需要提交其他参数可以直接FormData无参数的构造函数
+    var url =url|| "upload.php";
+    //convertBase64UrlToBlob函数是将base64编码转换为Blob
+    formData.append("upload_file",convertBase64UrlToBlob(base64Codes));  //append函数的第一个参数是后台获取数据的参数名,和html标签的input的name属性功能相同
+     
+    //ajax 提交form
+    if(window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    } else if(window.ActiveXObject) {
+        xmlhttp = new ActiveXObject();
+    }
+
+    xmlhttp.open("POST", url, true);
+    xmlhttp.send(formData);
+    xmlhttp.onload = function(e) {
+        if(this.status == 200) {
+            var res_obj = eval("(" + this.responseText + ")");
+            console.log(res_obj);
+           
+        }
+    };
+}
+
+
+/*监听file上传时事件，转base64并写入input*/
+$('#file').on('change',function(){
+    var file=$("#file").get(0).files[0];
+    var data=getBase64(file,function(base64Data){
+        $('#form1').append("<input type=\"hidden\" name=\"uploadfile\" value=\""+base64Data+"\" >");
+        $('.show-console-log').append(base64Data);
+        //var blob = convertBase64UrlToBlob(base64Data);
+        //console.log(blob);     
+    });
+           
+})
+
+$('button').on('click',function(){
+    var url="{:url('upload2')}";
+    var base64Codes=$("input[name='uploadfile']").val();
+    sumitImageFile(base64Codes,url);
+    alert(111)
+           
+})
+
+
+
+
+
+
+/*
+
+//下载远程图片
+downloadFile(url) { 
+    var aLink = document.createElement('a');
+    var evt = document.createEvent("MouseEvents");
+    evt.initEvent("click", false, false);
+    aLink.download = url;
+    aLink.href = url;
+    aLink.dispatchEvent(evt);
+}
+
+downloadFile('http://xxx.com/xx.jpg')
+
+ */
+
+
+</script>
+{/block}
+
+{block name="main"}
+    <!-- /.row -->
+    <div class="row">
+        <form id="form1">
+            <input type="file" name="file" multiple="multiple" id="file">
+        </form>
+        <button>提交</button>
+        <div class="show-console-log col-md-12 col-lg-12" style=" word-break:break-all; "></div>
+    </div>
+    <!-- /.row -->
+{/block}

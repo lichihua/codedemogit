@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>兼容IE8的响应式网格瀑布流布局jQuery插件</title>
+<link rel="stylesheet" type="text/css" href="__ADMIN__/css/pbl.css">
+<style type="text/css">
+		#gallery-wrapper {
+		position: relative;
+		max-width: 75%;
+		width: 75%;
+		margin:50px auto;
+		}
+		img.thumb {
+		width: 100%;
+		max-width: 100%;
+		height: auto;
+		}
+		.white-panel {
+		position: absolute;
+		background: white;
+		border-radius: 5px;
+		box-shadow: 0px 1px 2px rgba(0,0,0,0.3);
+		padding: 10px;
+		}
+		.white-panel h1 {
+		font-size: 1em;
+		}
+		.white-panel h1 a {
+		color: #A92733;
+		}
+		.white-panel:hover {
+		box-shadow: 1px 1px 10px rgba(0,0,0,0.5);
+		margin-top: -5px;
+		-webkit-transition: all 0.3s ease-in-out;
+		-moz-transition: all 0.3s ease-in-out;
+		-o-transition: all 0.3s ease-in-out;
+		transition: all 0.3s ease-in-out;
+		}
+	</style>
+<!--[if IE]>
+		<script src="http://libs.baidu.com/html5shiv/3.7/html5shiv.min.js"></script>
+		<script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.js"></script>
+	<![endif]-->
+</head>
+<body>
+<section id="gallery-wrapper">
+    <article class="white-panel r1 c0">
+        <img src="__ADMIN__/img/pbl/1.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 1</a></h1>
+        <p>Description 1</p>
+    </article>
+
+    <article class="white-panel r1 c1">
+        <img src="__ADMIN__/img/pbl/2.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 2</a></h1>
+        <p>Description 2</p>
+    </article>
+
+    <article class="white-panel r1 c2">
+        <img src="__ADMIN__/img/pbl/3.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 3</a></h1>
+        <p>Description 3</p>
+    </article>
+
+    <article class="white-panel r1 c3">
+        <img src="__ADMIN__/img/pbl/4.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 4</a></h1>
+        <p>Description 4</p>
+    </article>
+
+    <article class="white-panel r2 c0">
+        <img src="__ADMIN__/img/pbl/5.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 5</a></h1>
+        <p>Description 5</p>
+    </article>
+
+    <article class="white-panel r2 c1">
+        <img src="__ADMIN__/img/pbl/6.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 6</a></h1>
+        <p>Description 6</p>
+    </article>
+
+    <article class="white-panel r2 c2">
+        <img src="__ADMIN__/img/pbl/7.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 7</a></h1>
+        <p>Description 7</p>
+    </article>
+
+    <article class="white-panel r2 c3">
+        <img src="__ADMIN__/img/pbl/8.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 8</a></h1>
+        <p>Description 8</p>
+    </article>
+
+    <article class="white-panel r3 c0">
+        <img src="__ADMIN__/img/pbl/9.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 9</a></h1>
+        <p>Description 9</p>
+    </article>
+
+    <article class="white-panel r3 c1">
+        <img src="__ADMIN__/img/pbl/10.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 10</a></h1>
+        <p>Description 10</p>
+    </article>
+
+    <article class="white-panel r3 c2">
+        <img src="__ADMIN__/img/pbl/11.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 11</a></h1>
+        <p>Description 11</p>
+    </article>
+
+    <article class="white-panel r3 c3">
+        <img src="__ADMIN__/img/pbl/12.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 12</a></h1>
+        <p>Description 12</p>
+    </article>
+
+    <article class="white-panel r4 c0">
+        <img src="__ADMIN__/img/pbl/13.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 13</a></h1>
+        <p>Description 13</p>
+    </article>
+
+    <article class="white-panel r4 c1">
+        <img src="__ADMIN__/img/pbl/14.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 14</a></h1>
+        <p>Description 14</p>
+    </article>
+
+    <article class="white-panel r4 c2">
+        <img src="__ADMIN__/img/pbl/15.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 15</a></h1>
+        <p>Description 15</p>
+    </article>
+
+
+
+
+    <article class="white-panel r1 c0">
+        <img src="__ADMIN__/img/pbl/1.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 1</a></h1>
+        <p>Description 1</p>
+    </article>
+
+    <article class="white-panel r1 c1">
+        <img src="__ADMIN__/img/pbl/2.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 2</a></h1>
+        <p>Description 2</p>
+    </article>
+
+    <article class="white-panel r1 c2">
+        <img src="__ADMIN__/img/pbl/3.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 3</a></h1>
+        <p>Description 3</p>
+    </article>
+
+    <article class="white-panel r1 c3">
+        <img src="__ADMIN__/img/pbl/4.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 4</a></h1>
+        <p>Description 4</p>
+    </article>
+
+    <article class="white-panel r2 c0">
+        <img src="__ADMIN__/img/pbl/5.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 5</a></h1>
+        <p>Description 5</p>
+    </article>
+
+    <article class="white-panel r2 c1">
+        <img src="__ADMIN__/img/pbl/6.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 6</a></h1>
+        <p>Description 6</p>
+    </article>
+
+    <article class="white-panel r2 c2">
+        <img src="__ADMIN__/img/pbl/7.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 7</a></h1>
+        <p>Description 7</p>
+    </article>
+
+    <article class="white-panel r2 c3">
+        <img src="__ADMIN__/img/pbl/8.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 8</a></h1>
+        <p>Description 8</p>
+    </article>
+
+    <article class="white-panel r3 c0">
+        <img src="__ADMIN__/img/pbl/9.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 9</a></h1>
+        <p>Description 9</p>
+    </article>
+
+    <article class="white-panel r3 c1">
+        <img src="__ADMIN__/img/pbl/10.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 10</a></h1>
+        <p>Description 10</p>
+    </article>
+
+    <article class="white-panel r3 c2">
+        <img src="__ADMIN__/img/pbl/11.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 11</a></h1>
+        <p>Description 11</p>
+    </article>
+
+    <article class="white-panel r3 c3">
+        <img src="__ADMIN__/img/pbl/12.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 12</a></h1>
+        <p>Description 12</p>
+    </article>
+
+    <article class="white-panel r4 c0">
+        <img src="__ADMIN__/img/pbl/13.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 13</a></h1>
+        <p>Description 13</p>
+    </article>
+
+    <article class="white-panel r4 c1">
+        <img src="__ADMIN__/img/pbl/14.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 14</a></h1>
+        <p>Description 14</p>
+    </article>
+
+    <article class="white-panel r4 c2">
+        <img src="__ADMIN__/img/pbl/15.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 15</a></h1>
+        <p>Description 15</p>
+    </article>
+
+
+
+
+    <article class="white-panel r1 c0">
+        <img src="__ADMIN__/img/pbl/1.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 1</a></h1>
+        <p>Description 1</p>
+    </article>
+
+    <article class="white-panel r1 c1">
+        <img src="__ADMIN__/img/pbl/2.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 2</a></h1>
+        <p>Description 2</p>
+    </article>
+
+    <article class="white-panel r1 c2">
+        <img src="__ADMIN__/img/pbl/3.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 3</a></h1>
+        <p>Description 3</p>
+    </article>
+
+    <article class="white-panel r1 c3">
+        <img src="__ADMIN__/img/pbl/4.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 4</a></h1>
+        <p>Description 4</p>
+    </article>
+
+    <article class="white-panel r2 c0">
+        <img src="__ADMIN__/img/pbl/5.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 5</a></h1>
+        <p>Description 5</p>
+    </article>
+
+    <article class="white-panel r2 c1">
+        <img src="__ADMIN__/img/pbl/6.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 6</a></h1>
+        <p>Description 6</p>
+    </article>
+
+    <article class="white-panel r2 c2">
+        <img src="__ADMIN__/img/pbl/7.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 7</a></h1>
+        <p>Description 7</p>
+    </article>
+
+    <article class="white-panel r2 c3">
+        <img src="__ADMIN__/img/pbl/8.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 8</a></h1>
+        <p>Description 8</p>
+    </article>
+
+    <article class="white-panel r3 c0">
+        <img src="__ADMIN__/img/pbl/9.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 9</a></h1>
+        <p>Description 9</p>
+    </article>
+
+    <article class="white-panel r3 c1">
+        <img src="__ADMIN__/img/pbl/10.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 10</a></h1>
+        <p>Description 10</p>
+    </article>
+
+    <article class="white-panel r3 c2">
+        <img src="__ADMIN__/img/pbl/11.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 11</a></h1>
+        <p>Description 11</p>
+    </article>
+
+    <article class="white-panel r3 c3">
+        <img src="__ADMIN__/img/pbl/12.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 12</a></h1>
+        <p>Description 12</p>
+    </article>
+
+    <article class="white-panel r4 c0">
+        <img src="__ADMIN__/img/pbl/13.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 13</a></h1>
+        <p>Description 13</p>
+    </article>
+
+    <article class="white-panel r4 c1">
+        <img src="__ADMIN__/img/pbl/14.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 14</a></h1>
+        <p>Description 14</p>
+    </article>
+
+    <article class="white-panel r4 c2">
+        <img src="__ADMIN__/img/pbl/15.jpg" class="thumb">
+        <h1>
+            <a href="http://www.jq22.com/demo/jquery-pbl20160118/#">Title 15</a></h1>
+        <p>Description 15</p>
+    </article>
+
+</section>
+<script src="__VENDOR__/jquery/jquery-1.11.0.min.js"></script>
+<script>
+	// window.jQuery || document.write('<script src="js/jquery-1.11.0.min.js"><\/script>')
+</script>
+<script src="__ADMIN__/js/pinterest_grid.js"></script>
+<script type="text/javascript">
+		$(function(){
+			$("#gallery-wrapper").pinterest_grid({
+				no_columns: 4,
+                padding_x: 10,
+                padding_y: 10,
+                margin_bottom: 50,
+                single_column_breakpoint: 700
+			});
+		});
+        $(function(){ 
+          var winH = $(window).height(); //页面可视区域高度 
+          var i = 1; //设置当前页数 
+          $(window).scroll(function () { 
+            var pageH = $(document.body).height(); 
+            var scrollT = $(window).scrollTop(); //滚动条top 
+            var aa = (pageH-winH-scrollT)/winH; 
+            if(aa<0.02){ 
+              $.getJSON("{:url('getdata')}",{page:i},function(data){ 
+                if(data){
+                    data=$.parseJSON(data); 
+                    var str = ""; 
+                    $.each(data,function(index,element){ 
+
+                        var str = " <article class=\"white-panel r3 c3\">"; 
+                            str += "<img src=\"__ADMIN__/img/pbl/"+element['img']+"\" class=\"thumb\">"; 
+                            str += "<h1><a href=\"#\">"+element['tittle']+"</a></h1>"; 
+                            str += "<p>"+element['description']+"</p>"; 
+                            str += "</article>"; 
+                        $("#gallery-wrapper").append(str); 
+                    }); 
+                    i++; 
+                }else{ 
+                    $(".nodata").show().html("别滚动了，已经到底了。。。"); 
+                    return false; 
+                } 
+              }); 
+            } 
+          }); 
+        });        
+</script>
+</body>

@@ -1,0 +1,146 @@
+{extend name="public/base" /}
+
+{block name="title"}百度webuploader大文件分片上传插件{/block}
+{block name="pagetitle"}百度webuploader大文件分片上传插件{/block}
+{block name="pagecss"}
+    <!--引入CSS-->
+    <link rel="stylesheet" type="text/css" href="__VENDOR__/webuploader/webuploader.css">
+
+{/block}
+{block name="pagejs"}
+<!-- 
+├── Uploader.swf                      // SWF文件，当使用Flash运行时需要引入。
+
+├── webuploader.js                    // 完全版本。
+├── webuploader.min.js                // min版本
+
+├── webuploader.flashonly.js          // 只有Flash实现的版本。
+├── webuploader.flashonly.min.js      // min版本
+
+├── webuploader.html5only.js          // 只有Html5实现的版本。
+├── webuploader.html5only.min.js      // min版本
+
+├── webuploader.withoutimage.js       // 去除图片处理的版本，包括HTML5和FLASH.
+└── webuploader.withoutimage.min.js   // min版本
+ -->
+<!--引入JS-->
+<script type="text/javascript" src="__VENDOR__/webuploader/webuploader.js"></script>
+{/block}
+
+{block name="customjs"} 
+
+<script>
+/**
+ * 上传文件函数
+ * @param  {[type]} ids    ids唯一ID
+ * @param  {[type]} folder folder文件保存目录
+ * @return {[type]}        [description]
+ */
+function uploadfiles(ids,folder) {
+    $(function(){
+        var $list = $("#the_"+ids),
+            $btn = $("#Btn_"+ids),
+            folder=folder||'filesdir'
+        var uploader = WebUploader.create({
+          resize: false, // 不压缩image
+          swf: '__VENDOR__/webuploader/uploader.swf', // swf文件路径
+          server: '{:url("uploadFile")}', // 文件接收服务端。
+          pick: "#pick_"+ids, // 选择文件的按钮。可选
+          chunked: true, //是否要分片处理大文件上传
+          chunkSize:5*1024*1024, //分片上传，每片2M，默认是5M
+          //fileSizeLimit: 6*1024* 1024 * 1024,    // 所有文件总大小限制 6G
+          fileSingleSizeLimit: 10*1024* 1024 * 1024,    // 单个文件大小限制 5 G
+          formData: {
+                folder:folder  //自定义参数
+          }
+          //auto: false //选择文件后是否自动上传
+         // chunkRetry : 2, //如果某个分片由于网络问题出错，允许自动重传次数
+          //runtimeOrder: 'html5,flash',
+          // accept: {
+          //   title: 'Images',
+          //   extensions: 'gif,jpg,jpeg,bmp,png',
+          //   mimeTypes: 'image/*'
+          // }
+        });
+        // 当有文件被添加进队列的时候
+        uploader.on( 'fileQueued', function( file ) {
+            $list.append( '<div id="' + file.id + '" class="item">' +
+                '<h4 class="info">' + file.name + '</h4>' +
+                '<p class="state">等待上传...</p>' +
+            '</div>' );
+        });
+        // 文件上传过程中创建进度条实时显示。
+        uploader.on( 'uploadProgress', function( file, percentage ) {
+            var $li = $( '#'+file.id ),
+                $percent = $li.find('.progress .progress-bar');
+ 
+            // 避免重复创建
+            if ( !$percent.length ) {
+                $percent = $('<div class="progress progress-striped active">' +
+                  '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                  '</div>' +
+                '</div>').appendTo( $li ).find('.progress-bar');
+            }
+ 
+            $li.find('p.state').text('上传中');
+ 
+            $percent.css( 'width', percentage * 100 + '%' );
+        });
+        // 文件上传成功
+        uploader.on( 'uploadSuccess', function( file,response) {
+            $( '#'+file.id ).find('p.state').text('已上传');
+            $list.append('<input type="hidden" name="'+ids+'" value="'+response.filePath+'" />');
+            //alert(response.filePath);
+        });
+ 
+        // 文件上传失败，显示上传出错
+        uploader.on( 'uploadError', function( file ) {
+            $( '#'+file.id ).find('p.state').text('上传出错');
+        });
+        // 完成上传完
+        uploader.on( 'uploadComplete', function( file ) {
+            $( '#'+file.id ).find('.progress').fadeOut();
+        });
+ 
+        $btn.on('click', function () {
+            if ($(this).hasClass('disabled')) {
+                return false;
+            }
+            uploader.upload();
+            // if (state === 'ready') {
+            //     uploader.upload();
+            // } else if (state === 'paused') {
+            //     uploader.upload();
+            // } else if (state === 'uploading') {
+            //     uploader.stop();
+            // }
+        });
+    });
+}
+
+
+uploadfiles(2655,"files");
+
+</script>
+
+{/block}
+
+{block name="main"}
+	
+    <!-- /.row -->
+    <div class="row">
+        <div class="case1">
+            <h3>文件上传</h3>
+            <div id="uploadfile">
+                <!--用来存放文件信息-->
+                <div id="the_2655" class="uploader-list"></div>
+                <div class="form-group form-inline">
+                    <div id="pick_2655" style="float:left">选择文件</div>  
+                    <button id="Btn_2655" class="btn btn-default" style="padding: 5px 10px;border-radius: 3px;">开始上传</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+
+{/block}

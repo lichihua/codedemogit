@@ -227,9 +227,10 @@ class Log
      */
     public static function __callStatic($method, $args)
     {
+        
         if (in_array($method, self::$type)) {
             array_push($args, $method);
-
+            
             call_user_func_array('\\think\\Log::record', $args);
         }
     }

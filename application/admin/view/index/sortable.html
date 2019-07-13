@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title>拖拽</title>
+
+    <!-- 360 使用Google Chrome Frame -->
+    <meta name="renderer" content="webkit">
+
+    <!-- 优先使用 IE 最新版本和 Chrome -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    
+    <!-- 开启响应式 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>-->
+    <!-- SEO页面关键词 -->
+    <meta name="keywords" content="your keywords">
+
+    <!-- SEO页面描述 -->
+    <meta name="description" content="your description">
+
+    <!-- favicon，可更改图片类型 -->
+    <link rel="shortcut icon" type="image/ico" href="/favicon.ico" />
+
+    <link href="" rel="stylesheet">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/>
+    <script src="__VENDOR__/sortable/Sortable.js" type="text/javascript"></script>
+    <!-- 插件 -->
+    
+    <style type="text/css">
+        ul {
+          list-style: none;
+          padding: 0;
+        }
+
+        li {
+          background: #eee;
+          margin: 1px;
+          padding: 5px 10px;
+        }
+
+        .sortable-ghost {
+          opacity: .6;
+        }
+        .list-group-item {
+          cursor: move;
+          cursor: -webkit-grabbing;
+        }
+
+        .grid .item {
+          padding: 10px;
+          float: left;
+        }
+
+        .grid .item img {
+          cursor: move;
+          cursor: -webkit-grabbing;
+        }
+
+        .sortable-fallback img{
+          border-radius: 50%;
+        }
+
+
+        .my-handle {
+          cursor: move;
+          cursor: -webkit-grabbing;
+        }
+        .demo6{
+            height: 250px;
+        }
+
+        .bg-danger {
+            background-color: #dc3545!important;
+        }
+        /* ghostClass */
+        .ghost {
+          opacity: .5;
+          background: #C8EBFB;
+        }
+
+        /* chosenClass */
+        .chosen {
+          color: #fff;
+          background-color: #c00;
+        }
+
+        .highlight {
+          background-color: #f9c7c8 !important;
+        }
+    </style>    
+</head>
+<body>
+ <a href="http://sortablejs.github.io/Sortable/" target="_blank">官方demo</a>
+
+<div class="demo1">
+    <ul id="items">
+    <li>item 1</li>
+    <li>item 2</li>
+    <li>item 3</li>
+    </ul>    
+    <script type="text/javascript">
+    var el = document.getElementById('items');
+        //静态方法和属性
+        //var sortable = Sortable.create(element, options) 同var sortable = new Sortable(element, options)
+        Sortable.active  //活动的Sortable实例
+        Sortable.dragged //被拖动的元素
+        Sortable.ghost   //幽灵元素
+        Sortable.clone   //克隆元素
+        // import { Sortable, MultiDrag } from 'sortablejs';
+        //Sortable.mount(new multiDrag())   //插件
+
+        //Sortable.utils
+        console.log(Sortable.utils);
+        Sortable.utils.on(el,event,function(){})    //附加事件处理函数
+        Sortable.utils.off(el,event,function(){})   //删除事件处理程序
+        Sortable.utils.css(el);                     //获取所有CSS属性的值  返回一个对象
+        Sortable.utils.css(el,"color");             //获取指定样式属性的值
+        Sortable.utils.css(el,"color","red");       //设置样式属性的值
+        Sortable.utils.css(el,{color:"red",width:100});       //设置更多CSS属性
+        Sortable.utils.find(el,"li",function(){});       //设置更多CSS属性按标签名称获取元素 返回数组
+        //Sortable.utils.bind(el,Sortable.utils.css(el),function(){});       //获取一个函数并返回一个始终具有特定上下文的新函数(并不存在这个方法！！！！！！)
+        Sortable.utils.is(el,'#items');              //检查选择器当前匹配的元素集 返回boolean
+        //Sortable.utils.nearest(el,'#items');         //对于集合中的每个元素，通过测试元素本身并遍历DOM树中的祖先来获取与选择器匹配的第一个元素(也提示不存在该方法)
+        Sortable.utils.clone(el);              //创建匹配元素集的深层副本 返回html元素 如:<ul id="items" style="color:red;">
+        Sortable.utils.toggleClass(el,'className',true);              //在每个元素中添加或删除一个类 true 添加 false删除
+        Sortable.utils.toggleClass(el,'className',false);              //在每个元素中添加或删除一个类 true 添加 false删除
+        //Sortable.utils.detectDirection(el);              //自动检测元素的方向为'vertical'或'horizontal'    报错
+
+
+
+
+
+        var el = document.getElementById('items');
+        //方法
+        var sortable = new Sortable(el, {name:"test"});
+        sortable.option('animation',150)    //获取或设置选项
+        sortable.closest('el','selector')    //获取或设置选项
+        sortable.toArray()    //获取或设置选项 序列化可排序的列表单元的data-id（可通过配置项中dataIdAttr修改）放入一个数组，并返回这个数组中
+        var order = sortable.toArray();
+        sortable.sort(order.reverse()); // apply  通过自定义列表单元的data-id的数组对列表单元进行排序
+        sortable.save()    //保存当前排序参考demo13
+        sortable.destroy()    //完全删除可排序功能
+
+
+
+        var el = document.getElementById('items');
+        var sortable = new Sortable(el, {
+            group: {
+            name: 'bar',
+            //true|false|["baz", "qux"]|function 参数同pull  是否可以从其他列表添加元素，或者是否可以添加元素的组名称数组
+            put: 'qux',  //接受qux的item
+            //开启item列表的移动克隆能力,使其能够移动到别的item组
+            //pull的四个参数: true:启用移动 false:禁止移动   ["foo", "bar"]:可以移动列表过去组  函数自定义
+            pull: function (to, from) {
+              //from.el   移动的元素item对象
+              //to.el     移动目的地匀速item对象              
+                // 大于2 返回true,<=2 返回"clone"
+            return from.el.children.length > 2 || 'clone';
+            },
+            //revertClone:false //移动到另一个列表后，将克隆元素恢复到初始位置。效果请看demo4
+            },
+            sort: true,  //允许排序
+            delay: 0, // 以毫秒为单位定义开始排序的时间(多少毫秒后才可以排序 测试效果不太理想最好不用) IE或Edge上无法延迟
+            delayOnTouchOnly: false, //是否应仅在用户使用触摸时（例如，在移动设备上）应用延迟。在任何其他情况下都不会延迟。默认为false。
+            touchStartThreshold: 0, // px, 在取消延迟拖动事件之前，该点应移动多少像素 此选项与fallbackTolerance选项类似；delay设置此选项后，即使您的手指没有移动，某些具有非常敏感触摸显示屏的手机（如Samsung Galaxy S8）也会触发不需要的触摸移动事件，从而导致排序无法触发  此选项设置在取消延迟排序之前必须发生的最小指针移动 3到5之间的值是好的
+            disabled: false, // 则禁用sortable
+            /*eg:
+                var sortable = Sortable.create(list);
+
+                document.getElementById("switcher").onclick = function () {
+                    var state = sortable.option("disabled"); // get
+
+                    sortable.option("disabled", !state); // set
+                };
+            */
+            store: null,  // @see Store
+            animation: 150,  // ms, 排序时被移动项目额动画速度，`0` - 没有动画
+            easing: "cubic-bezier(1, 0, 0, 1)", // Easing 动画。默认为null。 See https://easings.net/ for examples.
+            handle: ".my-handle",  // 在列表项中拖动句柄选择器  要使列表项可拖动，Sortable将禁用用户的文本选择。这并不总是令人满意的。要允许文本选择，请定义一个拖动处理程序，它是每个列表元素的一个区域，允许它被拖动
+            filter: ".ignore-elements",  // 不会导致拖动的选择器 (String or Function)
+            preventOnFilter: true, // 触发`filter`时调用 `event.preventDefault()`
+            draggable: ".item",  // 指定元素内的哪些项应该是可拖动的
+
+            dataIdAttr: 'data-id',
+
+            ghostClass: "sortable-ghost",  // 放置占位符的类名称
+            chosenClass: "sortable-chosen",  // 所选项目的类名称
+            dragClass: "sortable-drag",  // 拖动项的类名
+
+            //交换阈值相关 参见http://sortablejs.github.io/Sortable/#thresholds
+            swapThreshold: 1, // 交换区域的阈值(0~1) 当阈值为1时 两个列表触碰就可以触发位置互换,为0时不能进行交换
+            invertSwap: false, // 如果设置为true，将始终使用反向交换区域
+            invertedSwapThreshold: 1, // 反转交换区域的阈值（默认设置为swapThreshold值）
+            //direction: 'horizontal', // 可排序方向（如果没有给出，将自动检测） 可设置'vertical', 'horizontal', or a function  只要目标被拖过来就会调用，必须返回'vertical'(垂直) or 'horizontal'（横向）
+           //可排序方向
+            direction:function(evt, target, dragEl){
+                if (target !== null && target.className.includes('half-column') && dragEl.className.includes('half-column')) {
+                    return 'horizontal';
+                };
+                return 'vertical';
+            }, //交换阈值相关
+
+
+
+            forceFallback: false,  // 如果设置为true，即使我们使用HTML5浏览器，也将回退使用非HTML5浏览器。这使我们有可能测试旧浏览器的行为，即使在较新的浏览器中，也可以使Drag'n Drop在桌面，移动和旧浏览器之间更加一致。最重要的是，Fallback总是生成该DOM元素的副本，并附加在选项中FallbackClass定义的类。此行为控制此“拖动”元素的外观。
+
+            fallbackClass: "sortable-fallback",  // 使用forceFallback时克隆的DOM元素的类名
+            fallbackOnBody: false,  //将克隆的DOM元素追加到Document的Body中
+            fallbackTolerance: 0, // 以像素为单位指定鼠标在被视为拖动之前应移动多远。
+
+            dragoverBubble: false,
+            removeCloneOnHide: true, // 默认true，意味着Sortable将在DOM被隐藏时从DOM中删除克隆元素。  如果设置为false，则通过将其CSS display属性设置为隐藏克隆none
+            emptyInsertThreshold: 5, // px, 距离鼠标必须从空可排序以将拖动元素插入其中  鼠标必须是空的可排序的距离（以像素为单位），同时拖动要插入到可排序的拖动元素。默认为5。设置为0禁用此功能
+
+
+            setData: function (/** 数据传输 */dataTransfer, /** HTML元素*/dragEl) {
+                dataTransfer.setData('Text', dragEl.textContent); // `dataTransfer` object of HTML5 DragEvent
+            },
+
+            // 元素被选中
+            onChoose: function (/**Event*/evt) {
+                evt.oldIndex;  // 在父元素的索引
+            },
+
+            // 元素未被选中
+            onUnchoose: function(/**Event*/evt) {
+                // 与onEnd相同的属性
+            },
+
+            // 元素拖动开始了
+            onStart: function (/**Event*/evt) {
+                evt.oldIndex;  // 在父元素的索引
+            },
+
+            // 元素拖动结束 
+            onEnd: function (/**Event*/evt) {
+                var itemEl = evt.item;  // dragged HTMLElement
+                evt.to;    // 目标列表
+                evt.from;  // 上一个列表
+                evt.oldIndex;  // 元素在旧父母中的旧索引
+                evt.newIndex;  // 元素在旧父母中的新索引
+                evt.oldDraggableIndex; // 元素在旧父元素中的旧索引，仅计算可拖动元素
+                evt.newDraggableIndex; // element在新父级中的新索引，仅计算可拖动元素
+                evt.clone // 克隆元素
+                evt.pullMode;  // 当item处于另一个sortable时: `"clone"` if cloning, `true` if moving
+            },
+
+            // 元素从另一个列表中放入列表中
+            onAdd: function (/**Event*/evt) {
+                // 与onEnd相同的属性
+            },
+
+            // 更改了列表中的排序
+            onUpdate: function (/**Event*/evt) {
+                // 与onEnd相同的属性
+            },
+
+            // 通过更改列表的任何调用 (add / update / remove)
+            onSort: function (/**Event*/evt) {
+                // 与onEnd相同的属性
+            },
+
+            // 元素从列表中删除到另一个列表中
+            onRemove: function (/**Event*/evt) {
+                // 与onEnd相同的属性
+            },
+
+            // 尝试拖动已过滤的元素
+            onFilter: function (/**Event*/evt) {
+                var itemEl = evt.item;  // HTMLElement receiving the `mousedown|tapstart` event.
+            },
+
+            // 移动列表中的项目或列表之间的事件
+            onMove: function (/**Event*/evt, /**Event*/originalEvent) {
+                // Example: https://jsbin.com/nawahef/edit?js,output
+                evt.dragged; // 拖动HTMLElement
+                evt.draggedRect; // DOMRect {left, top, right, bottom}
+                evt.related; // HTMLElement on which have guided
+                evt.relatedRect; // DOMRect
+                evt.willInsertAfter; // 布尔值，如果为true,Sortable默认情况下会在目标之后插入被拖动元素
+                originalEvent.clientY; // 鼠标的位置
+                // return false; — 取消
+                // return -1; — 在目标之前插入
+                // return 1; — 插入目标后
+            },
+
+            // 在创建克隆元素时调用
+            onClone: function (/**Event*/evt) {
+                var origEl = evt.item;
+                var cloneEl = evt.clone;
+            },
+
+            //拖动元素位置更改时调用
+            onChange: function(/**Event*/evt) {
+                evt.newIndex // 最有可能的原因是使用此事件来获取拖动元素的当前索引
+                // 与onEnd相同的属性
+            }
+        });
+
+
+        var el = document.getElementById('items');
+        var sortable = Sortable.create(el);
+    </script>
+</div>
+<h4>demo2</h4>    
+<div class="demo2">
+  <ul id="foo2">
+    <li>foo 1</li>
+    <li>foo 2</li>
+    <li>foo 3</li>
+  </ul>
+
+  <ul id="bar2">
+    <li>bar 1</li>
+    <li>bar 2</li>
+    <li>bar 3</li>
+  </ul>
+
+  <ul id="qux2">
+    <li>qux 1</li>
+  </ul>
+    <script type="text/javascript">
+    Sortable.create(foo2, {
+      group: 'foo',
+      animation: 100
+    });
+
+    Sortable.create(bar2, {
+      group: {
+        name: 'bar',
+        pull: true
+      },
+      animation: 100
+    });
+
+    Sortable.create(qux2, {
+      group: {
+        name: 'qux',
+        put: ['foo', 'bar']  //申明shortable的foo和bar两个组的的item能被拖进此item
+      },
+      animation: 100
+    });
+    </script>
+</div>
+
+<h4>demo3</h4>
+<div class="demo3">
+  <ul id="foo3">
+    <li>foo 1</li>
+    <li>foo 2</li>
+    <li>foo 3</li>
+  </ul>
+
+  <ul id="bar3">
+    <li>bar 1</li>
+    <li>bar 2</li>
+    
+  </ul>
+
+  <ul id="qux3">
+    <li>qux 1</li>
+  </ul>
+  <script type="text/javascript">
+    Sortable.create(foo3, {
+      group: 'foo',
+      animation: 100
+    });
+
+    Sortable.create(bar3, {
+      group: {
+        name: 'bar',
+       //true|false|["baz", "qux"]|function 参数同pull  是否可以从其他列表添加元素，或者是否可以添加元素的组名称数组
+        put: 'qux',  //接受qux的item
+        //开启item列表的移动克隆能力,使其能够移动到别的item组
+        //pull的四个参数: true:启用移动 false:禁止移动   ["foo", "bar"]:可以移动列表过去组  函数自定义
+        pull: function (to, from) {
+            //from.el   移动的元素item对象
+            //to.el     移动目的地匀速item对象              
+              // 大于2 返回true,<=2 返回"clone"
+          return from.el.children.length > 2 || 'clone';
+        },
+        //revertClone:false //移动到另一个列表后，将克隆元素恢复到初始位置。效果请看demo4
+      },
+      animation: 100
+    });
+    
+    Sortable.create(qux3, {
+      group: {
+        name: 'qux',
+        put: function (to) {
+          return to.el.children.length < 4;
+        }
+      },
+      animation: 100
+    });
+  </script>
+</div>
+
+<h4>demo4</h4>
+<div class="demo4">
+  <div id="A" class="list-group">
+    <div class="list-group-item">foo</div>
+    <div class="list-group-item">bar</div>
+    <div class="list-group-item">baz</div>
+  </div>
+  
+  <br>
+  <div id="B" class="list-group">
+    <div class="list-group-item">qux</div>
+    <div class="list-group-item">quux</div>
+  </div>
+  <script type="text/javascript">
+    Sortable.create(A, {
+      animation: 200,
+      group: {
+        name: "shared",
+        pull: "clone",
+        //移动到另一个列表后，将克隆元素恢复到初始位置  效果相当于禁止克隆差不多
+        revertClone: true,
+      },
+      sort: true
+    });
+
+    Sortable.create(B, {
+      group: "shared",
+      sort: false
+    });
+
+  </script>
+</div>
+<h4>demo4排序</h4>
+<div class="demo5">
+  <!-- sort: true -->
+  <div id="sortTrue" class="list-group">
+    <div class="list-group-item">foo</div>
+    <div class="list-group-item">bar</div>
+    <div class="list-group-item">baz</div>
+  </div>
+  
+  
+  <!-- sort: false -->
+  <div id="sortFalse" class="list-group">
+    <div class="list-group-item">qux</div>
+    <div class="list-group-item">quux</div>
+  </div>
+  <script type="text/javascript">
+    // sort: true
+    Sortable.create(sortTrue, {
+      group: "sorting",
+      sort: true
+    });
+
+    // sort: false
+    Sortable.create(sortFalse, {
+      group: "sorting",
+      sort: false
+    });
+  </script>
+</div>
+<h4>demo6   forceFallback</h4>
+<code>
+如果设置为true，即使我们使用HTML5浏览器，也将回退使用非HTML5浏览器。这使我们有可能测试旧浏览器的行为，即使在较新的浏览器中，也可以使Drag'n Drop在桌面，移动和旧浏览器之间更加一致。
+
+最重要的是，Fallback总是生成该DOM元素的副本，并附加在选项中FallbackClass定义的类。此行为控制此“拖动”元素的外观。
+</code>
+<div class="demo6">
+ <div id="sortable1" class="grid"><!-- __VENDOR__/sortable/images/a1.png -->
+    <div class="item"><img src="__VENDOR__/sortable/images/1.jpg" alt=""></div>
+    <div class="item"><img src="__VENDOR__/sortable/images/2.jpg" alt=""></div>
+    <div class="item"><img src="__VENDOR__/sortable/images/3.jpg" alt=""></div>
+    <div class="item"><img src="__VENDOR__/sortable/images/4.jpg" alt=""></div>
+    <div class="item"><img src="__VENDOR__/sortable/images/5.jpg" alt=""></div>
+    <div class="item"><img src="__VENDOR__/sortable/images/6.jpg" alt=""></div>
+    <div class="item"><img src="__VENDOR__/sortable/images/7.jpg" alt=""></div>
+    <div class="item"><img src="__VENDOR__/sortable/images/8.jpg" alt=""></div>
+    <div class="item"><img src="__VENDOR__/sortable/images/9.jpg" alt=""></div>
+    <div class="item"><img src="__VENDOR__/sortable/images/10.jpg" alt=""></div>
+    <div class="item"><img src="__VENDOR__/sortable/images/11.jpg" alt=""></div>
+    <div class="item"><img src="__VENDOR__/sortable/images/12.jpg" alt=""></div>
+    <div class="item"><img src="__VENDOR__/sortable/images/13.jpg" alt=""></div>
+    <div class="item"><img src="__VENDOR__/sortable/images/14.jpg" alt=""></div>
+    <div class="item"><img src="__VENDOR__/sortable/images/15.jpg" alt=""></div>
+    <div class="item"><img src="__VENDOR__/sortable/images/16.jpg" alt=""></div>
+  </div>
+  <script type="text/javascript">
+    Sortable.create(sortable1, {
+      forceFallback: true
+    });
+  </script>
+</div>
+<h4>demo7 handle 设置触发拖动对象的类</h4>
+<div class="demo7">
+  <!-- List with handle -->
+  <ul id="listWithHandle">
+      <li class="list-group-item">
+        <span class="glyphicon glyphicon-move my-handle" aria-hidden="true"></span>
+        Item 1
+      </li>
+    <li class="list-group-item">
+        <span class="glyphicon glyphicon-move my-handle" aria-hidden="true"></span>
+        Item 2
+      </li>
+  </ul>
+  <script type="text/javascript">
+    // List with handle
+    Sortable.create(listWithHandle, {
+      handle: '.my-handle',
+      animation: 150
+    });
+  </script>
+</div>
+<h4>demo8 filter设置不能移动列表的类名</h4>
+<div id="demo8" class=" list-group col">
+    <div class="list-group-item" style="">Item 2</div>
+    <div class="list-group-item" draggable="false" style="">Item 1</div>
+    <div class="list-group-item" draggable="false" style="">Item 4</div>
+    <div class="list-group-item bg-danger filtered" style="">Filtered</div>
+    <div class="list-group-item" draggable="false" style="">Item 3</div>
+    <div class="list-group-item" draggable="false" style="">Item 5</div>
+</div>
+<script type="text/javascript">
+    new Sortable(demo8, {
+        filter: '.filtered', // 'filtered' class is not draggable
+        animation: 150
+    });
+</script>
+
+
+<h4>demo9 设置目标移动时站位类名</h4>
+<div class="demo9">
+<!-- Simple List -->
+<div id="simpleList1" class="list-group"></div>
+<script type="text/javascript">
+    Sortable.create(simpleList1, {
+      ghostClass: 'ghost' //ghost类 半透明状态蓝色背景
+    });
+    // 生成 4  items
+    simpleList1.innerHTML = Array.apply(null,  new Array(4)).map(function (v, i) {
+      return '<div class="list-group-item">item ' +
+        (i + 1) +
+        '</div>';
+    }).join(''); 
+</script>
+</div>
+
+<h4>demo10 所选项目的类名称（默认sortable-chosen）。</h4>
+<div class="demo10">
+<!-- Simple List -->
+<div id="simpleList2" class="list-group"></div>
+<script type="text/javascript">
+Sortable.create(simpleList2, {
+  delay: 100,
+  chosenClass: 'chosen'
+});
+
+
+
+
+// Generate 4 items
+simpleList2.innerHTML = Array.apply(null,  new Array(4)).map(function (v, i) {
+  return '<div class="list-group-item">item ' +
+    (i + 1) +
+    '</div>';
+}).join('');
+</script>
+</div>
+<h4>demo11 emptyInsertThreshold   ？？？完全不知道有啥效果</h4>
+<div class="demo11">
+<!-- HTML -->
+<h4>List 1</h4>
+<ul id="list" class="list-group">
+  <li class="list-group-item">Item 1</li>
+  <li class="list-group-item">Item 2</li>
+  <li class="list-group-item">Item 3</li>
+  <li class="list-group-item">Item 4</li>
+  <li class="list-group-item">Item 5</li>
+</ul>
+
+
+<h4>List 2</h4>
+<ul id="list2" class="list-group">
+<script type="text/javascript">
+Sortable.create(list, {
+  group: 'shared',
+  animation: 100
+});
+
+Sortable.create(list2, {
+  group: 'shared',
+  animation: 100,
+  emptyInsertThreshold: 2 // 默认5 关闭0  关闭后无法其他组的列表无法拖拽进来 
+});
+
+</script>
+</div>
+<h4>demo12 Event object</h4>
+<div class="demo12">
+ <ul id="foo">
+    <li>foo 1</li>
+    <li>foo 2</li>
+    <li>foo 3</li>
+  </ul>
+
+  <ul id="bar">
+    <li>bar 1</li>
+    <li>bar 2</li>
+    <li>bar 3</li>
+  </ul>
+
+
+<script type="text/javascript">
+// Open DevTools > Console
+
+var options = {
+  group: 'share',
+  animation: 100
+};
+
+events = [
+  'onChoose',
+  'onStart',
+  'onEnd',
+  'onAdd',
+  'onUpdate',
+  'onSort',
+  'onRemove',
+  'onChange',
+  'onUnchoose'
+].forEach(function (name) {
+  options[name] = function (evt) {
+    console.log({
+      'event': name,
+      'this': this,
+      'item': evt.item,
+      'from': evt.from,
+      'to': evt.to,
+      'oldIndex': evt.oldIndex,
+      'newIndex': evt.newIndex
+    });
+  };
+});
+
+Sortable.create(foo, options);
+var a=Sortable.create(bar, options);
+
+
+</script>
+
+
+<div class="demo13">
+<ul id="el">
+    <li data-id="1">order</li>
+    <li data-id="2">save</li>
+    <li data-id="3">restore</li>
+</ul>
+
+<script type="text/javascript">
+Sortable.create(el, {
+    group: "localStorage-example",
+    store: {
+        /**
+         * Get the order of elements. Called once during initialization.
+         * @param   {Sortable}  sortable
+         * @returns {Array}
+         */
+        get: function (sortable) {
+            var order = localStorage.getItem(sortable.options.group.name);
+            return order ? order.split('|') : [];
+        },
+
+        /**
+         * Save the order of elements. Called onEnd (when the item is dropped).
+         * @param {Sortable}  sortable
+         */
+        set: function (sortable) {
+            var order = sortable.toArray();
+            localStorage.setItem(sortable.options.group.name, order.join('|'));
+        }
+    }
+})
+</script>
+</div>
+<h4>demo14 swap插件</h4>
+<div class="demo14">
+<div id="listswap" class="list-group">
+    <div class="list-group-item">Item 1</div>
+    <div class="list-group-item">Item 2</div>
+    <div class="list-group-item">Item 3</div>
+    <div class="list-group-item">Item 4</div>
+    <div class="list-group-item">Item
+</div>
+<script type="text/javascript">
+Sortable.create(listswap, {
+  swap: true,
+  swapClass: "highlight",
+  animation: 150
+});
+</script>
+</div>
+<h4>demo15 MultiDrag 插件</h4>
+<style type="text/css">
+.tinted {
+    background-color: #fff6b2 !important;
+}
+
+.selected {
+  background-color: #f9c7c8 !important;
+  border: solid red 1px !important;
+  z-index: 1 !important;
+}
+</style>
+<div class="demo15">
+  <div id="list3" class="list-group">
+    <div class="list-group-item">Item 1</div>
+    <div class="list-group-item">Item 2</div>
+    <div class="list-group-item">Item 3</div>
+    <div class="list-group-item">Item 4</div>
+    <div class="list-group-item">Item 5</div>
+  </div>
+  
+  <div id="list4" class="list-group">
+    <div class="list-group-item tinted">Item 1</div>
+    <div class="list-group-item tinted">Item 2</div>
+    <div class="list-group-item tinted">Item 3</div>
+    <div class="list-group-item tinted">Item 4</div>
+    <div class="list-group-item tinted">Item 5</div>
+  </div>
+<script type="text/javascript">
+    Sortable.create(list3, {
+      group: 'shared',
+      multiDrag: true,
+      selectedClass: "selected",
+      animation: 150
+    });
+
+    Sortable.create(list4, {
+      group: 'shared',
+      multiDrag: true,
+      selectedClass: "selected",
+      animation: 150
+    });
+</script>
+</div>
+
+<h4>OnSpill</h4>
+<div class="OnSpill">
+<code>RevertOnSpill:启用此插件后，如果拖动的项目溢出（即，将其拖放到有效的可排序放置目标之外），将导致拖动的项目恢复到其原始位置</code>
+  <div id="list5" class="list-group">
+    <div class="list-group-item">Item 1</div>
+    <div class="list-group-item">Item 2</div>
+    <div class="list-group-item">Item 3</div>
+  </div>
+  <code>RemoveOnSpill:启用此插件时，如果拖动项目被溢出（即，它被删除到有效的可排序放置目标之外），将导致拖动项目从DOM中删除</code>
+  <div id="list6" class="list-group">
+    <div class="list-group-item ">Item 1</div>
+    <div class="list-group-item ">Item 2</div>
+    <div class="list-group-item ">Item 3</div>
+  </div>
+  <script type="text/javascript">
+    new Sortable(list5, {
+        revertOnSpill: false // Enable plugin
+    });
+    new Sortable(list6, {
+        removeOnSpill: false // Enable plugin
+    });    
+  </script>
+</div>
+
+
+
+<h4>demo17 自动滚屏插件 默认自带  overflow: hidden; height: 300px;</h4>
+<div class="demo16" style="border: 1px solid red;">
+    <div id="autoScroll" class="list-group" style=" height: 300px; width:500px;"></div>
+    <script type="text/javascript">
+        Sortable.create(autoScroll, { 
+
+        });
+
+        // Generate 100 items
+        autoScroll.innerHTML = Array.apply(null,  new Array(100)).map(function (v, i) {
+          return '<div class="list-group-item">item ' +
+            (i + 1) +
+            '</div>';
+        }).join('');
+    </script>
+</div>
+
+    <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+    <script src="http://libs.baidu.com/underscore/1.3.3/underscore.js"></script>
+</body>
+</html>

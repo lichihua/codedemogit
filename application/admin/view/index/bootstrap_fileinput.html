@@ -1,0 +1,42 @@
+{extend name="public/base" /}
+
+{block name="title"}Bootstrap fileinput.js插件{/block}
+{block name="pagetitle"}Bootstrap fileinput.js插件{/block}
+{block name="pagecss"}
+    <!-- CSS  v4.4.4起支持Bootstrap 4.x框架-->
+    <link type="text/css" href="" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.3/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
+{/block}
+{block name="pagejs"}
+    <!-- JavaScript -->
+    <script type="text/javascript" src=""></script>
+    <!-- the main fileinput plugin file  必须-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.3/js/fileinput.min.js"></script> 
+    <!-- 主题文件-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.3/themes/fa/theme.js"></script>
+
+    <!-- 本地化语言文件 -->
+    <script src="__VENDOR__/bootstrap-fileinput/js/locales/zh.js"></script>           
+{/block}
+
+{block name="customjs"} 
+<script>
+    // initialize with defaults
+    $("#input-id").fileinput();
+
+    // with plugin options
+    $("#input-id").fileinput({'showUpload':false, 'previewFileType':'any'});
+</script>
+
+{/block}
+<!-- https://github.com/kartik-v/bootstrap-fileinput -->
+{block name="main"}
+	
+    <!-- /.row -->
+    <div class="row">
+        <a href="http://plugins.krajee.com/file-input">文档</a>
+    	<input id="input-id" type="file" class="file-loading" multiple data-preview-file-type="text" >
+    </div>
+    <!-- /.row -->
+
+{/block}

@@ -1,0 +1,36 @@
+{extend name="public/base" /}
+
+{block name="title"}prismjs代码高亮{/block}
+{block name="pagetitle"}prismjs代码高亮{/block}
+{block name="pagecss"}
+    <!-- CSS -->
+    <link type="text/css" href="__VENDOR__/prismjs/okaidia/prism.css" rel="stylesheet">
+
+{/block}
+{block name="pagejs"}
+    <!-- JavaScript -->
+    <script type="text/javascript" src="__VENDOR__/prismjs/okaidia/prism.js"></script>
+    <!--data-manual：关闭自动高亮显示 改为手动调用api高亮-->
+    <!-- <script type="text/javascript" src="__VENDOR__/prismjs/okaidia/prism.js"  data-manual></script> -->
+{/block}
+
+{block name="customjs"} 
+<script>
+	/*给 pre 标签的 class 属性添加“line-numbers”值，让其显示行号，给 style 属性添加 “white-space: pre-wrap”值，让其自动换行*/
+		$('pre').addClass("line-numbers").css("white-space", "pre-wrap");
+</script>
+
+{/block}
+
+{block name="main"}
+	
+    <!-- /.row -->
+    <div class="row">
+		<pre><code class="language-css">p { color: red }</code></pre>
+		<pre><code class="language-php">&lt;?php<p>echo 111;</p><p>&nbsp;&nbsp;&nbsp;&nbsp;demo("'dash");</p></code></pre>
+		<pre><code class="language-javascript">var name="dash";<br>var a=function(e){console.log(111);}<br>$("#id").css('color','#FFF');</code></pre>
+    </div>
+    <!-- /.row -->
+
+{/block}
+

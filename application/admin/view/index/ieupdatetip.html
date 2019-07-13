@@ -1,0 +1,36 @@
+{extend name="public/base" /}
+
+{block name="title"}ie 低版本更新提示{/block}
+{block name="pagetitle"}ie 低版本更新提示{/block}
+{block name="pagecss"}
+<!-- CSS -->
+<link type="text/css" href="" rel="stylesheet">
+<!-- ie10、ie9、ie8、ie7、ie6 都提示 -->
+<script>/*@cc_on document.write('\x3Cscript id="_iealwn_js" src="//support.dmeng.net/ie-alert-warning/latest.js">\x3C/script>'); @*/</script>
+
+<!-- ie9及更旧版提示升级 -->
+<!--[if lte IE 9]> <script>var _iealwn = {once: 0, outver: 9};</script> <script id="_iealwn_js" src="//support.dmeng.net/ie-alert-warning/latest.js"></script> <![endif]-->
+{/block}
+{block name="pagejs"}
+    <!-- JavaScript -->
+    <script type="text/javascript" src=""></script>
+
+{/block}
+
+{block name="customjs"} 
+    <script>
+    	var test=1;
+    	var test1=2;
+    </script>
+
+{/block}
+
+{block name="main"}
+	
+    <!-- /.row -->
+    <div class="row">
+    			空白页
+    </div>
+    <!-- /.row -->
+
+{/block}

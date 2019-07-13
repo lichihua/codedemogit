@@ -1,0 +1,270 @@
+{extend name="public/base" /}
+
+{block name="title"}codemirror代码高亮{/block}
+{block name="pagetitle"}codemirror代码高亮{/block}
+{block name="pagecss"}
+<!-- 主要CSS -->
+<link rel="stylesheet" href="__VENDOR__/codemirror/lib/codemirror.css">
+<!-- 代码折叠css -->
+<!--支持代码折叠-->
+<link rel="stylesheet" href="__VENDOR__/codemirror/addon/fold/foldgutter.css"/>
+
+<!-- 主题css -->
+<link rel="stylesheet" href="__VENDOR__/codemirror/theme/zenburn.css">
+<link rel="stylesheet" href="__VENDOR__/codemirror/theme/dracula.css">
+{/block}
+{block name="pagejs"}
+<!-- JavaScript -->
+<script src="__VENDOR__/codemirror/lib/codemirror.js"></script>
+<!-- 代码折叠js -->
+<script src="__VENDOR__/codemirror/addon/fold/foldcode.js"></script>
+<script src="__VENDOR__/codemirror/addon/fold/foldgutter.js"></script>
+<script src="__VENDOR__/codemirror/addon/fold/brace-fold.js"></script>
+<script src="__VENDOR__/codemirror/addon/fold/comment-fold.js"></script>
+<script src="__VENDOR__/codemirror/addon/fold/indent-fold.js"></script>
+<script src="__VENDOR__/codemirror/addon/fold/markdown-fold.js"></script>
+<script src="__VENDOR__/codemirror/addon/fold/xml-fold.js"></script>
+
+<!-- javascript 高亮支持脚本代码 -->
+<script src="__VENDOR__/codemirror/mode/javascript/javascript.js"></script>
+<!-- xml 支持高亮语言的脚本 -->
+<script src="__VENDOR__/codemirror/mode/xml/xml.js"></script>
+<script src="__VENDOR__/codemirror/mode/css/css.js"></script>
+<script src="__VENDOR__/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+<script src="__VENDOR__/codemirror/mode/php/php.js"></script>
+<script src="__VENDOR__/codemirror/mode/sql/sql.js"></script>
+{/block}
+
+{block name="customjs"} 
+<script>
+/* */
+
+
+/*
+    建一个编辑器实例 并将它注入到id为demo的容器中 var myCodeMirror = CodeMirror(document.getElementById("demo"));
+    编辑器将附加到文档正文，开始为空，并将使用我们加载的mode。为了更好地控制新编辑器，可以将配置对象作为CodeMirror的第二个参数传递
+*/
+var config=CodeMirror.defaults;//全局配置
+    config.theme="zenburn";
+
+var myCodeMirror = CodeMirror(document.getElementById("demo"), {
+    value:'value 编辑器的初始值。可以是字符串，也可以是文档对象',
+    value:CodeMirror.Doc('test text'),
+    mode:  "javascript",//mode名或者与值相关的mime类型如"text/javascript"
+    lineSeparator:'\n', //代码显示时的分隔符(将按照给定的字符.换行显示)
+});
+console.log(myCodeMirror);
+myCodeMirror.setSize('980px', '195px');     //设置代码框的长宽
+var val="var CodeMirror = (function() {\n";
+    val+="    function CodeMirror(place, givenOptions) {\n";
+    val+="        // Determine effective options based on given values and defaults.\n";
+    val+="        var options = {}, defaults = CodeMirror.defaults;\n";
+    val+="        for (var opt in defaults)\n";
+    val+="            if (defaults.hasOwnProperty(opt))\n";
+    val+="                options[opt] = (givenOptions && givenOptions.hasOwnProperty(opt) ? givenOptions : defaults)[opt];\n";
+    val+="        var targetDocument = options[\"document\"];\n";
+    val+="        var wrapper = targetDocument.createElement(\"div\");\n";
+    val+="        wrapper.className = \"CodeMirror\" + (options.lineWrapping ? \" CodeMirror-wrap\" : \"\");\n";
+    val+="    }\n";
+    val+="}\n";
+myCodeMirror.setValue(val);    //给代码框赋值(非CodeMirror.Doc.setValue)
+myCodeMirror.getValue("\n");    //获取代码框的值
+
+myCodeMirror.setOption("theme", 'dracula'); //置新的config属性
+myCodeMirror.getOption("theme"); //置新的config属性
+
+
+//console.log(CodeMirror.modes);//CodeMirror已定义了哪些模式
+//console.log(CodeMirror.mimeModes);//CodeMirror已定义了哪些MIME类型
+console.log(CodeMirror.defaults);
+/*0为起点第一行 第1行第三个字母到 第1行第5个字母*/
+console.log(myCodeMirror.getRange({line:0,ch:2},{line:0,ch:5},"\n"));
+/*0为起点第一行 将第1行第三个字母到到第1getLine行第5个字母替换为 替换的内容*/
+myCodeMirror.replaceRange("替换的内容",{line:0,ch:2},{line:0,ch:5},"\n");
+myCodeMirror.getLine(0);
+console.log(myCodeMirror.getLine(0));//获取指定行的内容 0位第一行
+console.log(myCodeMirror.lineCount());//获取编辑器中的行数
+console.log(myCodeMirror.firstLine());//获取编辑器中第一行的编号。这通常为零，但对于链接的子视图或使用非零第一行实例化的文档，它可能返回其他值
+console.log(myCodeMirror.lastLine());//获取编辑器中最后一行的编号
+var LineHandle = myCodeMirror.getLineHandle(0);//获取给定行号的行句柄
+console.log(LineHandle);
+console.log(myCodeMirror.getLineNumber(LineHandle));//给定一个行句柄，返回该行的当前位置（或null当它不再在文档中时）
+myCodeMirror.eachLine(function(LineHandle){
+    console.log(LineHandle)
+});//遍历整个文件
+myCodeMirror.eachLine(0,1,function(LineHandle){
+    console.log(LineHandle)
+});//start_line,end_line遍历整个文件
+//myCodeMirror.markClean();//将编辑器内容设置为“clean” 这是一个在编辑之前将保留的标志，并且当再次撤消此类编辑时将再次设置该标志。用于跟踪是否需要保存内容。这个功能不赞成使用changeGeneration，它允许多个子系统跟踪不同的清洁概念而不会干扰
+myCodeMirror.changeGeneration(true);//参数可选、返回一个后来可以传递给的数字，isClean以测试是否在此期间进行了任何编辑（而不是撤消）。如果closeEvent为true，则当前历史事件将“关闭”，这意味着它不能与进一步更改组合（通常组合快速键入或删除事件）
+myCodeMirror.isClean(1);//参数可选、返回文档当前是否干净 - 自初始化后未进行修改markClean，或者如果没有传递参数，则返回最后一次调用，或者由于匹配调用changeGeneration 是否给出了生成值
+
+/*光标和选择方法*/
+myCodeMirror.getSelection("\n");//参数可选、获取当前选定的代码。可选择传递行分隔符以放在输出中的行之间。当存在多个选择时，它们与lineSep其间的实例连接
+myCodeMirror.getSelections("\n");// 第二个参数可选、返回一个数组，其中包含每个选择的字符串，表示选择的内容。
+myCodeMirror.replaceSelection("给定替换的字符串","start");//参数可选、用给定的字符串替换选择。默认情况下，新选择在插入的文本后结束。可选select参数可用于更改此传递"around"将导致选择新文本，传递"start"将把选择内容折叠到插入文本的开头
+myCodeMirror.replaceSelections(["给定替换的字符串1","给定替换的字符串2"],"around");//选中替换，多条对多选 第二个参数可选、给定数组的长度应与活动选择的数量相同。用数组中的字符串替换选择的内容。该select参数的工作一样replaceSelection
+myCodeMirror.getCursor("to");//参数可选、检索主要 选择的一端。start是一个可选字符串，指示要返回的选择的结尾。它可以是"from"，"to"，"head" （当按下Shift +方向移动所述选择的侧面），或"anchor"（选择的固定侧）。省略参数与传递相同"head"。{line, ch}将返回一个对象
+myCodeMirror.listSelections();//检索所有当前选择的列表。这些将始终排序，并且永不重叠（重叠选择合并）。阵列中的每个对象都包含anchor 和head属性参考{line, ch}的对象
+myCodeMirror.somethingSelected();//如果选择任何文本，则返回true。
+myCodeMirror.setCursor(2);//设置光标位置。您可以将单个{line, ch}对象或行和字符作为两个单独的参数传递。将在给定位置使用单个空选择替换所有选择。支持的选项与for相同setSelection
+myCodeMirror.setSelection({line:0,ch:1},{line:0,ch:1,scroll:true});//设置单个选择范围设置单个选择范围。anchor 而head应该是{line, ch} 对象。未给出时head默认为anchor。支持以下选项：
+/*scroll: boolean
+确定是否应将选择头滚动到视图中。默认为true。
+origin: string
+确定选择历史事件是否可以与前一个事件合并。当一个原点以字符开头+，并且最后记录的选择具有相同的原点并且相似时（接近时间，折叠或两者都未折叠），新的选择将替换旧的。当它开始时*，它将始终替换先前的事件（如果它具有相同的原点）。内置动作使用"+move"原点。用户输入使用"+input"原点。
+bias: number
+确定选择端点落入原子范围时应调整的方向。可以是-1（向后）或1（向前）。如果没有给出，偏差将基于旧选择的相对位置 - 编辑器将尝试远离该选择，以防止卡住。*/
+myCodeMirror.setSelections([
+    {
+        anchor:{line:0,ch:1},
+        head:{line:0,ch:1}
+    },
+    {
+        anchor:{line:0,ch:1},
+        head:{line:0,ch:1}
+    }
+]);//设置一组新选择。给定数组中必须至少有一个选择。如果primary是数字，则确定哪个选择是主要选择。如果未给出，则主索引取自上一个选择，如果前一个选择的范围小于新的范围，则设置为最后一个范围。支持相同的选项setSelection。
+myCodeMirror.addSelection({line:0,ch:3},{line:0,ch:3});//向现有选择集添加新选择，并使其成为主要选择。
+myCodeMirror.extendSelection({line:0,ch:1},{line:0,ch:3});//类似于setSelection但是，如果保持移位或设置延伸标志，则移动选择的头部，同时将锚留在其当前位置。to是可选的，并且可以传递以确保最终选择区域（例如单词或段落）（除了该区域和当前锚点之间的任何位置）。当存在多个选择时，此方法将删除除主要选择之外的所有选择。支持相同的选项setSelection。
+myCodeMirror.extendSelections([{line:0,ch:1},{line:0,ch:1}]);//类似于setSelection但是，如果保持移位或设置延伸标志，则移动选择的头部，同时将锚留在其当前位置。to是可选的，并且可以传递以确保最终选择区域（例如单词或段落）（除了该区域和当前锚点之间的任何位置）。当存在多个选择时，此方法将删除除主要选择之外的所有选择。支持相同的选项setSelection。
+myCodeMirror.extendSelectionsBy(function(range){
+    //f: function(range: {anchor, head}   {anchor:{line:0,ch:1},head:{line:0,ch:1}}
+    console.log(range);
+    return {line:0,ch:1};
+});//将给定函数应用于所有现有选择，并调用extendSelections 结果。
+
+myCodeMirror.setExtending(true);//设置或清除“extends”标志，其作用类似于shift键，因为它将导致光标移动并调用以extendSelection 使选择锚点保持原位
+myCodeMirror.getExtending();//获取'extends'标志的值。
+myCodeMirror.hasFocus();//告诉您编辑器目前是否具有焦点
+myCodeMirror.findPosH({line:0,ch:1},1,"word",true);//用于查找水平光标移动的目标位置。start是一个{line, ch} 对象，amount一个整数（可能是负数），并且unit所述串的一个"char"，"column"或"word"。将返回通过移动amount时间指定距离产生的位置unit。如果visually是真的，从右到左文本的运动将是可视的而不是逻辑的。通过点击文档的结尾或开始剪切动作时，返回的值将具有hitSide 设置为true 的属性
+myCodeMirror.findPosV({line:0,ch:1},1,"line");//类似于findPosH，但用于垂直运动。unit可能是"line"或"page"。其他参数和返回值具有与它们相同的解释findPosH
+myCodeMirror.findPosV({line:0,ch:1});//返回给定位置的“单词”（字母，空格或标点符号）的开头和结尾。
+
+
+
+
+
+/*不想在父容器插入编辑器实例的话 可以用这个CodeMirror.fromTextArea(eledom,config)向给定兄弟元素追加*/
+myTextarea = document.getElementById("code");
+var editor = CodeMirror.fromTextArea(myTextarea, {
+    mode: "javascript",
+    value:"function myScript(){return 100;}\n",
+    //lineSeparator:'\n', 代码显示时的分隔符(将按照给定的字符.换行显示)
+    theme:'zenburn',
+    theme: "dracula",   //设置主题
+    scrollbarStyle:"native",//显示原生的滚动条。核心库还提供了”null”样式，此样式会完全隐藏滚动条。Addons可以设置更多的滚动条模式
+    lineNumbers:true,//是否在编辑器左侧显示行号。
+    firstLineNumber:1,//在哪个数字开始计数行号。默认值为1
+    //lineNumberFormatter:function(line: integer),//使用一个函数设置行号。
+    lineWrapping: false, //代码是折叠 在长行时文字是换行(wrap)还是滚动(scroll)，默认为false(滚动)
+    foldGutter: true,
+    gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],//用来添加额外的gutter  （在行号gutter前或代替行号gutter）。值应该是CSS名称数组，每一项定义了用于绘制gutter背景的宽度（还有可选的背景）。为了能明确设置行号gutter的位置（默认在所有其它gutter的右边），也可以包含CodeMirror-linenumbers类。类名是用于传给setGutterMarker的键名(keys)
+    fixedGutter: true,//设置gutter跟随编辑器内容水平滚动（false）还是固定在左侧（true或默认）
+    matchBrackets: true,    //括号匹配
+    readOnly: true,        //只读
+    indentUnit: 4,//缩进单位，值为空格数，默认为2 。
+    smartIndent: true,//自动缩进，设置是否根据上下文自动缩进（和上一行相同的缩进量）。默认为true   
+    tabSize: 4,//tab字符的宽度，默认为4 。
+    indentWithTabs: false,//在缩进时，是否需要把 n*tab宽度个空格替换成n个tab字符，默认为false 
+    electricChars: true,//在输入可能改变当前的缩进时，是否重新缩进，默认为true （仅在mode支持缩进时有效）。
+    specialChars: /[\u0000-\u001f\u007f-\u009f\u00ad\u061c\u200b-\u200f\u2028\u2029\ufeff]/g,//需要被占位符(placeholder)替换的特殊字符的正则表达式。最常用的是非打印字符。默认为：/[\u0000-\u0019\u00ad\u200b-\u200f\u2028\u2029\ufeff]/g。
+    //specialCharPlaceholder:defaultSpecialCharPlaceholder(ch),这是一个接收由specialChars选项指定的字符作为参数的函数，此函数会产生一个用来显示指定字符的DOM节点。默认情况下，显示一个红点（•），这个红点有一个带有前面特殊字符编码的提示框
+    //rtlMoveVisually: boolean,//光标移动方向以适用于阿拉伯语于希伯来语的从左向右的书写习惯
+    direction:"ltr",//翻转整体布局并选择基本段落方向为从左到右或从右到左。默认为“ltr”
+    keyMap:"default",//配置快捷键。默认值为default，即 codemorrir.js 内部定义。其它在key map目录下
+    extraKeys: {},//给编辑器绑定与前面keyMap配置不同的快捷键默认null
+    coverGutterNextToScrollbar:false,//当fixedGutter启用，并且存在水平滚动条时，在滚动条最左侧默认会显示gutter，当此项设置为true时，gutter会被带有CodeMirror-gutter-filler类的元素遮挡
+    inputStyle:"textarea",//选择CodeMirror处理输入和焦点的方式。核心库定义了textarea和contenteditable输入模式。在移动浏览器上，默认是contenteditable，在桌面浏览器上，默认是textarea。在contenteditable模式下对IME和屏幕阅读器支持更好
+    showCursorWhenSelecting:false,//在选择时是否显示光标，默认为false。
+    lineWiseCopyCut:true,//启用时，如果在复制或剪切时没有选择文本，那么就会自动操作光标所在的整行。
+    undoDepth:200,//最大撤消次数，默认为200（包括选中内容改变事件）
+    historyEventDelay: 1250,//在输入或删除时引发历史事件前的毫秒数 默认1250。
+    tabindex:null,//要分配给编辑器的选项卡索引。如果没有给出，则不会分配选项卡索引
+    autofocus:null,//是否在初始化时自动获取焦点。默认情况是关闭的。但是，在使用textarea并且没有明确指定值的时候会被自动设置为true
+    dragDrop:true,//是否允许拖放，默认为true。
+    allowDropFileTypes:[],//默认为null。当设置此项时，只接收包含在此数组内的文件类型拖入编辑器。文件类型为MIME名称
+    cursorBlinkRate:530,//光标闪动的间隔，单位为毫秒。默认为530。当设置为0时，会禁用光标闪动。负数会隐藏光标
+    cursorScrollMargin:0,//当光标靠近可视区域边界时，光标距离上方和下方的距离。默认为0 。
+    cursorHeight:1,//光标高度。默认为1，也就是撑满行高。对一些字体，设置0.85看起来会更好
+    resetSelectionOnContextMenu:true,//设置在选择文本外点击打开上下文菜单时，是否将光标移动到点击处。默认为true
+    //workTime, workDelay: number,//通过一个假的后台线程高亮 workTime 时长，然后使用 timeout 休息 workDelay 时长。默认为200和300 。（完全不懂这个功能是在说啥）
+    pollInterval:100,//指明CodeMirror向对应的textarea滚动（写数据）的速度（获得焦点时）。大多数的输入都是通过事件捕获，但是有的输入法（如IME）在某些浏览器上并不会生成事件，所以使用数据滚动。默认为100毫秒
+    flattenSpans:true,//默认情况下，CodeMirror会将使用相同class的两个span合并成一个。通过设置此项为false禁用此功能
+    addModeClass:false,//当启用时（默认禁用），会给每个标记添加额外的表示生成标记的mode的以cm-m开头的CSS样式类。例如，XML mode产生的标记，会添加cm-m-xml类
+    maxHighlightLength:10000,//当需要高亮很长的行时，为了保持响应性能，当到达某些位置时，编辑器会直接将其他行设置为纯文本(plain text)。默认为10000，可以设置为Infinity来关闭此功能
+    viewportMargin:10,//指定当前滚动到视图中内容上方和下方要渲染的行数。这会影响到滚动时要更新的行数。通常情况下应该使用默认值10。可以设置值为Infinity始终渲染整个文档。注意：这样设置在处理大文档时会影响性能
+    pasteLinesPerSelection:true,//从外部源（而不是编辑器本身）粘贴内容时，如果行数与选择的数量匹配，则默认情况下CodeMirror将为每个选择插入一行。您可以将其设置false为禁用该行为
+    selectionsMayTouch:false,//确定多个选择是在触摸时（默认值）还是仅在它们重叠时（true）连接
+    phrases:null,//某些插件通过该phrase 方法运行用户可见的字符串（例如界面中的标签）以允许翻译。此选项确定该方法的返回值。如果它为null或者没有输入字符串命名的属性的对象，则返回该字符串。否则，返回与该字符串对应的属性的值
+    spellcheck:true,//指定是否在输入上启用拼写检查。
+    autocorrect:false,//指定是否在输入上启用自动更正。
+    //指定是否在输入上启用自动资本化
+    autocapitalize:false,
+    /*允许您配置鼠标选择和拖动的行为 按下鼠标左键时调用该函数*/
+    configureMouse:function(CodeMirror,repeat,event){
+        var obj={
+            unit:"line",//选择的单位。对于自定义单元，可以是内置单元之一，也可以是一个位置并返回其范围的函数。默认设置是返回"word"双击，"line"三次点击，"rectangle"alt-clicks（或Chrome操作系统，元移位点击）等"single" 。 取值："char" | "word" | "line" | "rectangle" | fn(CodeMirror, Pos) → {from: Pos, to: Pos}
+            extend:true,//是否扩展现有选择范围或开始新选择范围。默认情况下，单击班次时会启用此功能
+            addNew:true,//启用后，这会为现有选择添加新范围，而不是替换它。默认行为是在Mac OS上为命令单击启用此功能，并在其他平台上按住Control键单击
+            moveOnDrag:true,//当鼠标甚至在编辑器内部拖动内容时，它控制是复制（false）还是移动（true）。默认情况下，通过在Mac OS上单击鼠标右键并在其他位置按住Ctrl键单击来启用此功能
+        }
+        return obj;
+    },
+});
+
+
+
+</script>
+
+{/block}
+
+{block name="main"}
+    <a href="https://codemirror.net/index.html#browsersupport">官方文档</a>
+	<a href="https://blog.csdn.net/xiaohxx/article/details/89761737">中文文档</a>
+    <!-- /.row -->
+    <div class="row">
+        <div id="demo"></div>
+        <h2>Demo2</h2>
+        <form>
+            <textarea id="code" name="code">
+                // 渲染代码：
+                var editor = CodeMirror.fromTextArea(document.getElementById("fnBody"), {
+                                lineNumbers: true,
+                                mode: "javascript",
+                                matchBrackets: true
+                 });
+                // 获取代码的文本值
+                var fnBody = editor.doc.getValue();
+
+
+                // 运行脚本，预览结果
+                $('#fn-eval-btn').unbind().bind('click', () => {
+                    console.dir(editor);
+                    var fnBody = editor.doc.getValue();
+                    var postData = {
+                        js: fnBody
+                    };
+
+                    $.ajax({
+                        url: '/datafactory/evalJs.json'
+                        , data: postData
+                        , type: 'POST'
+                        , success: (result) => {
+                            if (result.success == true) {
+                                $('#eval-result').html(`<div>运行结果：</div><code>${result.data}</code>`)
+                            } else {
+                                alert(result.errorMessage)
+                            }
+                        }
+                        , error: (err) => {
+                            alert(JSON.stringify(err))
+                        }
+                    });
+                });// fn-eval-btn
+            </textarea>
+        </form>
+
+    <!-- /.row -->
+
+{/block}

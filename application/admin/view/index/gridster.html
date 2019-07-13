@@ -1,0 +1,67 @@
+{extend name="public/base" /}
+
+{block name="title"}gridster{/block}
+{block name="pagetitle"}gridster{/block}
+{block name="pagecss"}
+    <!-- CSS -->
+    <link href="__VENDOR__/gridster/jquery.gridster.min.css" rel="stylesheet">
+
+{/block}
+{block name="pagejs"}
+    <!-- JavaScript -->
+    <script type="text/javascript" src="__VENDOR__/gridster/jquery.gridster.min.js"></script>
+{/block}
+{block name="customcss"}
+<style>
+    a{  color: #808080;}
+    h1{ padding:10px;   font-size: 38px;}
+    ul{ list-style:none;}
+    .s1{background: url('__VENDOR__/gridster/140x140.png');}
+    .s2{background: url('__VENDOR__/gridster/300x140.png');}
+    .s3{background: url('__VENDOR__/gridster/140x300.png');}
+    .s4{background: url('__VENDOR__/gridster/300x300.png');}
+</style>
+<style type="text/css"> [data-col="18"] { left:2730px;}  [data-col="17"] { left:2570px;}  [data-col="16"] { left:2410px;}  [data-col="15"] { left:2250px;}  [data-col="14"] { left:2090px;}  [data-col="13"] { left:1930px;}  [data-col="12"] { left:1770px;}  [data-col="11"] { left:1610px;}  [data-col="10"] { left:1450px;}  [data-col="9"] { left:1290px;}  [data-col="8"] { left:1130px;}  [data-col="7"] { left:970px;}  [data-col="6"] { left:810px;}  [data-col="5"] { left:650px;}  [data-col="4"] { left:490px;}  [data-col="3"] { left:330px;}  [data-col="2"] { left:170px;}  [data-col="1"] { left:10px;}  [data-row="26"] { top:4010px;}  [data-row="25"] { top:3850px;}  [data-row="24"] { top:3690px;}  [data-row="23"] { top:3530px;}  [data-row="22"] { top:3370px;}  [data-row="21"] { top:3210px;}  [data-row="20"] { top:3050px;}  [data-row="19"] { top:2890px;}  [data-row="18"] { top:2730px;}  [data-row="17"] { top:2570px;}  [data-row="16"] { top:2410px;}  [data-row="15"] { top:2250px;}  [data-row="14"] { top:2090px;}  [data-row="13"] { top:1930px;}  [data-row="12"] { top:1770px;}  [data-row="11"] { top:1610px;}  [data-row="10"] { top:1450px;}  [data-row="9"] { top:1290px;}  [data-row="8"] { top:1130px;}  [data-row="7"] { top:970px;}  [data-row="6"] { top:810px;}  [data-row="5"] { top:650px;}  [data-row="4"] { top:490px;}  [data-row="3"] { top:330px;}  [data-row="2"] { top:170px;}  [data-row="1"] { top:10px;}  [data-sizey="1"] { height:140px;} [data-sizey="2"] { height:300px;} [data-sizey="3"] { height:460px;} [data-sizey="4"] { height:620px;} [data-sizey="5"] { height:780px;} [data-sizex="1"] { width:140px;} [data-sizex="2"] { width:300px;} [data-sizex="3"] { width:460px;} [data-sizex="4"] { width:620px;} [data-sizex="5"] { width:780px;}
+</style>
+{/block}
+
+{block name="customjs"} 
+    <script>
+        $(function() {
+           $(".gridster ul").gridster({
+               widget_margins: [10, 10],
+               widget_base_dimensions: [140, 140]
+           });
+        });
+    </script>
+
+{/block}
+
+{block name="main"}
+	
+    <!-- /.row -->
+    <div class="row">
+        
+        <section>
+            <div class="gridster ready">
+                <ul style="height: 480px; position: relative;">
+                    <li class="s1 gs_w" data-row="1" data-col="1" data-sizex="1" data-sizey="1"></li>
+                    <li class="s1 gs_w" data-row="2" data-col="1" data-sizex="1" data-sizey="1"></li>
+                    <li class="s1 gs_w" data-row="3" data-col="1" data-sizex="1" data-sizey="1"></li>
+                    <li class="s2 gs_w" data-row="1" data-col="2" data-sizex="2" data-sizey="1"></li>
+                    <li class="s4 gs_w" data-row="2" data-col="2" data-sizex="2" data-sizey="2"></li>
+                    <li class="s1 gs_w" data-row="1" data-col="4" data-sizex="1" data-sizey="1"></li>
+                    <li class="s2 gs_w" data-row="2" data-col="4" data-sizex="2" data-sizey="1"></li>
+                    <li class="s1 gs_w" data-row="3" data-col="4" data-sizex="1" data-sizey="1"></li>
+                    <li class="s1 gs_w" data-row="1" data-col="5" data-sizex="1" data-sizey="1"></li>
+                    <li class="s1 gs_w" data-row="3" data-col="5" data-sizex="1" data-sizey="1"></li>
+                    <li class="s1 gs_w" data-row="1" data-col="6" data-sizex="1" data-sizey="1"></li>
+                    <li class="s3 gs_w" data-row="2" data-col="6" data-sizex="1" data-sizey="2"></li>
+                </ul>
+            </div>
+        </section>
+
+    </div>
+    <!-- /.row -->
+
+{/block}

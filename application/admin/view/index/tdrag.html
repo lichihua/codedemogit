@@ -1,0 +1,381 @@
+{extend name="public/base" /}
+
+{block name="title"}tdrag{/block}
+{block name="pagetitle"}tdrag{/block}
+{block name="pagecss"}
+    <!-- CSS -->
+    <link type="text/css" href="__VENDOR__/tdrag/demo.css" rel="stylesheet">
+
+{/block}
+{block name="pagejs"}
+    <!-- JavaScript -->
+    <script type="text/javascript" src="__VENDOR__/tdrag/Tdrag.js"></script>
+{/block}
+
+{block name="customjs"} 
+    <script>
+        $(function() {
+
+
+/*
+参数列表
+var call = {
+    scope: null,//父级
+    grid: null,//网格
+    axis:"all",//上下或者左右
+    pos:false,//是否记住位置
+    handle:null,//手柄
+    moveClass:"tezml",//移动时不换位加的class
+    dragChange:false,//是否开启拖拽换位
+    changeMode:"point",//point & sort
+    cbStart:function(){},//移动前的回调函数
+    cbMove:function(){},//移动中的回调函数
+    cbEnd:function(){},//移动结束时候的回调函数
+    random:false,//是否自动随机排序
+    randomInput:null,//点击随机排序的按钮
+    animation_options:{//运动时的参数
+        duration:800,//每次运动的时间
+        easing:"ease-out"//移动时的特效，ease-out、ease-in、linear
+    },
+    disable:false,//禁止拖拽
+    disableInput:null//禁止拖拽的按钮
+};
+ */
+		 	//顶部的拖拽
+		    $(".div1").Tdrag();
+		    //第一个例子的拖拽
+		    $(".div2").Tdrag();
+		    //第二个例子的拖拽
+		    $(".div3").Tdrag({
+		        scope:".boxList"
+		    });
+		    //第三个例子的拖拽
+		    $(".div4").Tdrag({
+		        scope:".boxList",
+		        grid:[50,50]
+		    });
+
+		    //第四个例子的拖拽
+		    $(".onlyX").Tdrag({
+		        scope:".boxList",
+		        axis:"x"
+		    });
+		    $(".onlyY").Tdrag({
+		        scope:".boxList",
+		        axis:"y"
+		    });
+		    //第五个例子的拖拽
+		    $(".div5").Tdrag({
+		        pos:true
+		    });
+		    //第六个例子的拖拽
+		    $(".div6").Tdrag({
+		        scope:".boxList",
+		        handle:".title"
+		    });
+		    //第七个例子的拖拽
+		    $(".div7").Tdrag({
+		        scope:".boxList",
+		        cbStart:function(){$(".start").html(Number($(".start").html())+1)},//移动前的回调函数
+		        cbMove:function(){$(".move").html(Number($(".move").html())+1)},//移动中的回调函数
+		        cbEnd:function(){$(".end").html(Number($(".end").html())+1)}//移动结束时候的回调函数
+		    });
+		    //第八个例子的拖拽
+		    $(".div8").Tdrag({
+		        scope:".boxList",
+		        pos:true,
+		        dragChange:true
+		    });
+		    //第八个例子的拖拽
+		    $(".div9").Tdrag({
+		        scope:".boxList",
+		        pos:true,
+		        dragChange:true,
+		        changeMode:"sort"
+		    });
+		    //第九个例子的拖拽
+		    $(".div10").Tdrag({
+		        scope:".boxList",
+		        pos:true,
+		        dragChange:true,
+		        changeMode:"sort",
+		        moveClass:"abc"
+		    });
+		    //第十个例子的拖拽
+		    $(".div11").Tdrag({
+		        scope:".boxList",
+		        pos:true,
+		        dragChange:true,
+		        random:true,
+		        randomInput:".plug_random"
+		    });
+		    $(".fn_random").on("click",function(){
+		        $.randomfn(".div11")
+		    });
+		    //第十一个例子的拖拽
+		    $(".div12").Tdrag({
+		        scope:".boxList",
+		        pos:true,
+		        dragChange:true,
+		        animation_options:{
+		            duration:200,//每次动画的事件
+		            easing:"ease-in"//动画特效 ease-out、ease-in、linear
+		        }
+		    });
+		    //第十一个例子的拖拽
+		    $(".div13").Tdrag({
+		        scope:".boxList",
+		        disable:true,
+		        disableInput:".disable"
+		    });
+		    //禁止
+		    $(".disable_cloose").on("click",function(){
+		        $.disable_cloose()
+		    });
+		    //开启
+		    $(".disable_open").on("click",function(){
+		        $.disable_open()
+		    });
+
+        });    
+    </script>
+
+{/block}
+
+{block name="main"}
+	
+<!-- /.row -->
+<div class="row">
+	<div style="height: 450px;"></div>
+	<div class="div1"></div>
+	<div class="div2"></div>
+
+	<!-- 父级限制 -->
+	<h1>父级限制</h1>
+	<div class="boxList">
+	    <div class="div3"></div>
+	</div>
+	<!-- 拖拽规范网格 -->
+	<h1>拖拽规范网格</h1>
+	<div class="boxList">
+		<div class="one div4"></div>
+	</div>
+	<!-- X轴拖拽或者Y轴拖拽 -->
+	<h1>X轴拖拽或者Y轴拖拽</h1>
+	<div class="boxList">
+		<div class="one onlyX"></div>
+		<div class="one onlyY"></div>
+	</div>
+	<!-- 记住位置 -->
+	<h1>记住位置</h1>
+	<div style="height: 100px;">
+		<div class="one div5"></div>
+	</div>
+	<!-- 拖拽块内指定区域 -->
+	<h1>拖拽块内指定区域</h1>
+	<div class="boxList">
+		<div class="one div6" style="position: absolute; margin: 0px;">
+			<div class="title">title</div>
+		</div>
+	</div>
+<!-- 点住、移动、结束时的回调函数 -->
+<h1>点住、移动、结束时的回调函数</h1>
+<div class="boxList">
+	<div class="one div7" style="position: absolute; margin: 0px;"> </div>
+	<div> start:
+		<p class="start">0</p>
+		move:
+		<p class="move">0</p>
+		end:
+		<p class="end">0</p>
+	</div>
+</div>
+<!-- 多个块换位拖拽 -->
+<h1>多个块换位拖拽</h1>
+<div class="boxList">
+<div class="one div8" index="0" style="left: 20px; top: 20px; position: absolute; margin: 0px;">
+<div class="title">1</div>
+</div>
+<div class="one div8" index="1" style="left: 160px; top: 20px; position: absolute; margin: 0px;">
+<div class="title">2</div>
+</div>
+<div class="one div8" index="2" style="left: 300px; top: 20px; position: absolute; margin: 0px;">
+<div class="title">3</div>
+</div>
+<div class="one div8" index="3" style="left: 20px; top: 160px; position: absolute; margin: 0px;">
+<div class="title">4</div>
+</div>
+<div class="one div8" index="4" style="left: 160px; top: 160px; position: absolute; margin: 0px;">
+<div class="title">5</div>
+</div>
+<div class="one div8" index="5" style="left: 300px; top: 160px; position: absolute; margin: 0px;">
+<div class="title">6</div>
+</div>
+<div class="one div8" index="6" style="left: 20px; top: 300px; position: absolute; margin: 0px;">
+<div class="title">7</div>
+</div>
+<div class="one div8" index="7" style="left: 160px; top: 300px; position: absolute; margin: 0px;">
+<div class="title">8</div>
+</div>
+<div class="one div8" index="8" style="left: 300px; top: 300px; position: absolute; margin: 0px;">
+<div class="title">9</div>
+</div>
+</div>
+
+<!-- 排序换位拖拽 -->
+<h1>排序换位拖拽</h1>
+<div class="boxList">
+<div class="one div9" index="0" style="left: 20px; top: 20px; position: absolute; margin: 0px;">
+<div class="title">1</div>
+</div>
+<div class="one div9" index="1" style="left: 160px; top: 20px; position: absolute; margin: 0px;">
+<div class="title">2</div>
+</div>
+<div class="one div9" index="2" style="left: 300px; top: 20px; position: absolute; margin: 0px;">
+<div class="title">3</div>
+</div>
+<div class="one div9" index="3" style="left: 20px; top: 160px; position: absolute; margin: 0px;">
+<div class="title">4</div>
+</div>
+<div class="one div9" index="4" style="left: 160px; top: 160px; position: absolute; margin: 0px;">
+<div class="title">5</div>
+</div>
+<div class="one div9" index="5" style="left: 300px; top: 160px; position: absolute; margin: 0px;">
+<div class="title">6</div>
+</div>
+<div class="one div9" index="6" style="left: 20px; top: 300px; position: absolute; margin: 0px;">
+<div class="title">7</div>
+</div>
+<div class="one div9" index="7" style="left: 160px; top: 300px; position: absolute; margin: 0px;">
+<div class="title">8</div>
+</div>
+<div class="one div9" index="8" style="left: 300px; top: 300px; position: absolute; margin: 0px;">
+<div class="title">9</div>
+</div>
+</div>
+
+
+
+<!-- 排序换位拖拽:在移动过程中每两个块相触碰时所添加的class -->
+<h1>排序换位拖拽:在移动过程中每两个块相触碰时所添加的class</h1>
+<div class="boxList">
+<div class="one div10" index="0" style="left: 20px; top: 20px; position: absolute; margin: 0px;">
+<div class="title">1</div>
+</div>
+<div class="one div10" index="1" style="left: 160px; top: 20px; position: absolute; margin: 0px;">
+<div class="title">2</div>
+</div>
+<div class="one div10" index="2" style="left: 300px; top: 20px; position: absolute; margin: 0px;">
+<div class="title">3</div>
+</div>
+<div class="one div10" index="3" style="left: 20px; top: 160px; position: absolute; margin: 0px;">
+<div class="title">4</div>
+</div>
+<div class="one div10" index="4" style="left: 160px; top: 160px; position: absolute; margin: 0px;">
+<div class="title">5</div>
+</div>
+</div>
+<!-- 随机变化位置 -->
+<h1>随机变化位置:</h1>
+<h3>随机变化位置
+random属性属于加载时自动随机，randomInput属于给按钮加上事件，而我们也为随机数增加一种randomfn()方法，方便调用。</h3>
+<div class="example ">
+<input class="plug_random" type="button" value="通过插件随机">
+<input class="fn_random" type="button" value="通过函数随机">
+<div class="boxList">
+<div class="one div11" index="1" style="left: 160px; top: 20px; position: absolute; margin: 0px;">
+<div class="title">1</div>
+</div>
+<div class="one div11" index="7" style="left: 160px; top: 300px; position: absolute; margin: 0px;">
+<div class="title">2</div>
+</div>
+<div class="one div11" index="3" style="left: 20px; top: 160px; position: absolute; margin: 0px;">
+<div class="title">3</div>
+</div>
+<div class="one div11" index="9" style="left: 20px; top: 440px; position: absolute; margin: 0px;">
+<div class="title">4</div>
+</div>
+<div class="one div11" index="5" style="left: 300px; top: 160px; position: absolute; margin: 0px;">
+<div class="title">5</div>
+</div>
+<div class="one div11" index="2" style="left: 300px; top: 20px; position: absolute; margin: 0px;">
+<div class="title">6</div>
+</div>
+<div class="one div11" index="11" style="left: 300px; top: 440px; position: absolute; margin: 0px;">
+<div class="title">7</div>
+</div>
+<div class="one div11" index="0" style="left: 20px; top: 20px; position: absolute; margin: 0px;">
+<div class="title">8</div>
+</div>
+<div class="one div11" index="10" style="left: 160px; top: 440px; position: absolute; margin: 0px;">
+<div class="title">9</div>
+</div>
+<div class="one div11" index="8" style="left: 300px; top: 300px; position: absolute; margin: 0px;">
+<div class="title">10</div>
+</div>
+<div class="one div11" index="4" style="left: 160px; top: 160px; position: absolute; margin: 0px;">
+<div class="title">11</div>
+</div>
+<div class="one div11" index="6" style="left: 20px; top: 300px; position: absolute; margin: 0px;">
+<div class="title">12</div>
+</div>
+</div>
+</div>
+
+
+
+
+<!-- 变化位置时动画参数 -->
+<h1>变化位置时动画参数</h1>
+<div class="example">
+<div class="boxList">
+<div class="one div12" index="0" style="left: 22px; top: 21px; position: absolute; margin: 0px; z-index: 1000;">
+<div class="title">1</div>
+</div>
+<div class="one div12" index="1" style="left: 160px; top: 20px; position: absolute; margin: 0px;">
+<div class="title">2</div>
+</div>
+<div class="one div12" index="5" style="left: 300px; top: 160px; position: absolute; margin: 0px; z-index: 1003;">
+<div class="title">3</div>
+</div>
+<div class="one div12" index="3" style="left: 23px; top: 169px; position: absolute; margin: 0px; z-index: 1001;">
+<div class="title">4</div>
+</div>
+<div class="one div12" index="4" style="left: 160px; top: 160px; position: absolute; margin: 0px; z-index: 1004;">
+<div class="title">5</div>
+</div>
+<div class="one div12" index="2" style="left: 300px; top: 20px; position: absolute; margin: 0px; z-index: 1002;">
+<div class="title">6</div>
+</div>
+<div class="one div12" index="6" style="left: 20px; top: 300px; position: absolute; margin: 0px;">
+<div class="title">7</div>
+</div>
+<div class="one div12" index="7" style="left: 160px; top: 300px; position: absolute; margin: 0px;">
+<div class="title">8</div>
+</div>
+<div class="one div12" index="8" style="left: 300px; top: 300px; position: absolute; margin: 0px;">
+<div class="title">9</div>
+</div>
+</div>
+</div>
+
+
+
+<!-- 禁止拖拽 -->
+<h1>禁止拖拽</h1>
+<h3>disable属性属于加载时自动禁止拖拽，randomInput属于给按钮加上事件，点击时如果是禁止的，就是开启。反而如果时开启的，点击就是禁止而我们也为随机数增加两种disable方法，一个只能开启拖拽：disable_open()，一个只能禁止拖拽：disable_cloose(),方便调用</h3>
+<div class="example">
+<input type="button" class="disable" value="插件按钮">
+<input type="button" class="disable_open" value="函数开启拖拽">
+<input type="button" class="disable_cloose" value="函数禁止拖拽">
+<div class="boxList">
+<div class="one div13" style="position: absolute; margin: 0px;"></div>
+</div>
+</div>
+
+
+
+</div>
+<!-- /.row -->
+
+{/block}

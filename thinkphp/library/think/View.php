@@ -41,6 +41,7 @@ class View
         if ('' != $root) {
             $root = '/' . ltrim($root, '/');
         }
+        echo $root;
         $baseReplace = [
             '__ROOT__'   => $root,
             '__URL__'    => $base . '/' . $request->module() . '/' . Loader::parseName($request->controller()),

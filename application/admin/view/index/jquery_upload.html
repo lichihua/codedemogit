@@ -1,0 +1,74 @@
+{extend name="public/base" /}
+
+{block name="title"}jquery_upload{/block}
+{block name="pagetitle"}jquery_upload{/block}
+{block name="pagecss"}
+    <!-- CSS -->
+    <link type="text/css" href="__VENDOR__/jquery-upload/upload.css" rel="stylesheet">
+
+{/block}
+{block name="pagejs"}
+    <!-- JavaScript -->
+    <!-- <script type="text/javascript" src="__VENDOR__/jquery/jquery-1.7.1.min.js"></script> -->
+    <script type="text/javascript" src="__VENDOR__/jquery-upload/jQuery.upload.js"></script>
+{/block}
+
+{block name="customjs"} 
+    <script>
+		$(function(){
+			$("#case1").upload();
+			$("#case2").upload();
+			$("#case3").upload(
+				////该函数为点击放大镜的回调函数，如没有该函数，则不显示放大镜
+				function(_this,data){
+					console.log(data)
+				}
+			)
+		})
+    </script>
+
+{/block}
+
+{block name="main"}
+	
+    <!-- /.row -->
+    <h1>原生</h1>
+    <div class="row">
+    	<form action="{:url('upload1')}" method="post" enctype="multipart/form-data" > 
+		    <input type="file" name="file[]" id="file" multiple="multiplt"><br>
+		    <input type="submit" name="submit" value="提交">
+    	</form>
+    	<h1>案例1  多文件</h1>
+		<div class="case">
+			<div class="upload multiple empty" id="case1" action="{:url('upload1')}" data-type="zip,pdf,doc,docx,png,jpeg,jpg" data-num="10"></div>
+		</div>    
+		<h1>案例2  单文件</h1>
+		<div class="case">
+			<div class="upload one empty" action="{:url('upload1')}" data-num="1" id="case2" data-value="/uploads/default.png"></div>
+		</div>		
+    	
+		<h1>案例3  多文件文件带默认图片</h1>
+		<div class="case">
+			<div class="upload multiple" action="{:url('upload1')}" data-value="/uploads/default.png" id="case3"></div>
+		</div>    	
+    </div>
+    <!-- /.row -->
+
+<!-- 
+
+参数配置：
+标签	默认值	说明
+data-height	0	图片上传压缩最大高度，0则根据宽度等比例压缩
+data-width	1920	图片上传压缩最大宽度，0则根据高度等比例压缩
+data-type	png,jpg,jpeg,gif	允许上传文件的扩展名，多个扩展名用逗号分割，支持非图片格式的文件上传
+data-file	file	上传提交服务器的表单名
+data-name	uoload	最终表单提交图片路径的表单名
+action	        /upload.php(默认/index.php)	服务器接收上传文件的地址，服务器需返回{"code":1,"msg":"/upload/1.jpg"}的JSON字符串，code为上传状态，1为成功，0为失败，msg为成功的文件路径或失败原因提示！
+data-num	10	最多可以上传多少个文件，如为1，上传插件为单个文件上传样式
+data-size	20480	文件上传单个文件最大容量，图片不传不受该属性限制
+data-value	null	已经上传成功的文件名，多个文件用英文逗号分割
+上传成功后会将图片信息保存到<input type="hidden" name="upload" value="/uploads/default.png,/uploads/20190608131226_668.png">里
+ -->
+
+
+{/block}

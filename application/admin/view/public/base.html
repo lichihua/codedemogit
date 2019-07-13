@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+	<head>
+	    <meta charset="utf-8">
+	    <title>{block name="title"}1、浏览器窗口的标题{/block}</title>
+        <!-- Bootstrap Core CSS -->
+        <link href="__VENDOR__/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- MetisMenu CSS -->
+        <link href="__VENDOR__/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        <link href="__ADMIN__/css/sb-admin-2.css" rel="stylesheet">
+
+        <!-- Custom Fonts -->
+        <link href="__VENDOR__/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->       
+	    <!-- 2、专属css开始 -->
+        {block name="pagecss"} <link href="" rel="stylesheet" type="text/css" > {/block}
+	    {block name="customcss"} <style type="text/css"></style>{/block}
+	</head>
+	<body>
+    <div id="wrapper">
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            {include file="public/header" /}
+            {include file="public/menu" /}
+            
+        </nav>    
+        <div id="page-wrapper">    
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">
+                        <!--3、这里是需要改变的标题-->
+                        {block name="pagetitle"}标题：如用户列表{/block}
+                    </h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>	              
+            
+            {block name="main"}
+                网站主要内容！！！
+            {/block}
+
+	        </div            
+        </div>
+        <div id="footer">
+            {include file="public/footer" /}        
+        </div> 
+    </div>               
+	</body>
+    <!-- jQuery* -->
+    <script src="__VENDOR__/jquery/jquery.min.js"></script>
+
+        <!-- Bootstrap Core JavaScript -->
+    <script src="__VENDOR__/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="__VENDOR__/metisMenu/metisMenu.min.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="__ADMIN__/js/sb-admin-2.js"></script>
+
+    <!-- 5、页面专属js开始 -->
+    {block name="pagejs"}
+        <script src="" type="text/javascript"></script>
+    {/block} 
+    <!-- 页面专属js结束 -->
+
+    <!-- 6、页面专属自定义js开始 -->
+    {block name="customjs"}
+        <script type="text/javascript">
+            
+        </script>
+    {/block}
+    <!-- 页面专属自定义js结束 -->   
+
+</html>

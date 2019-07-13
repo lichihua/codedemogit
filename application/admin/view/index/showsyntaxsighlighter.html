@@ -1,0 +1,49 @@
+{extend name="public/base" /}
+
+{block name="title"}空白页{/block}
+{block name="pagetitle"}空白页{/block}
+{block name="pagecss"}
+<!--所使用的SyntaxHighlighter样式-->     
+<!-- <link type="text/css" rel="stylesheet" href="./syntaxhighlighter/styles/shCoreEclipse.css"/>   -->
+    <!-- syntaxsighlighter css -->
+    <link href="__VENDOR__/ueditor/third-party/SyntaxHighlighter/shCoreDefault.css" rel="stylesheet" type="text/css" />
+    <!-- syntaxsighlighter -->
+    <script type="text/javascript" src="__VENDOR__/ueditor/third-party/SyntaxHighlighter/shCore.js"></script>
+    <script type="text/javascript">SyntaxHighlighter.all();</script>
+{/block}
+{block name="pagejs"}
+<!--SyntaxHighlighter的基本脚本-->     
+<!-- <script type="text/javascript" src="./syntaxhighlighter/scripts/shCore.js"></script>  -->   
+<!--SyntaxHighlighter的对各个编程语言解析的脚本-->    
+<!-- <script type="text/javascript" src="./syntaxhighlighter/scripts/shBrushJScript.js"></script>    
+<script type="text/javascript" src="./syntaxhighlighter/scripts/shBrushPhp.js"></script>     
+<script type="text/javascript" src="./syntaxhighlighter/scripts/shBrushJava.js"></script>     
+<script type="text/javascript" src="./syntaxhighlighter/scripts/shBrushCSharp.js"></script>     
+<script type="text/javascript" src="./syntaxhighlighter/scripts/shBrushCpp.js"></script>     
+<script type="text/javascript" src="./syntaxhighlighter/scripts/shBrushAS3.js"></script>    
+<script type="text/javascript" src="./syntaxhighlighter/scripts/shBrushPython.js"></script>     
+<script type="text/javascript" src="./syntaxhighlighter/scripts/shBrushVb.js"></script>     
+<script type="text/javascript" src="./syntaxhighlighter/scripts/shBrushSql.js"></script>    
+<script type="text/javascript" src="./syntaxhighlighter/scripts/shBrushXml.js"></script>     
+<script type="text/javascript" src="./syntaxhighlighter/scripts/shBrushPlain.js"></script>    
+{/block} -->
+
+{block name="customjs"} 
+<!--初始化SyntaxHighlighter的必须代码，必须放在head中，引入文件之后-->     
+<!-- <script type="text/javascript">SyntaxHighlighter.all();</script>      -->
+<!--用于消除右上角的广告-->    
+<script type="text/javascript">SyntaxHighlighter.defaults['toolbar'] = false;</script>
+
+{/block}
+
+{block name="main"}
+	
+    <!-- /.row -->
+    <div class="row">
+    	<a href="https://highlightjs.org/download/">官方下载地址</a>
+		<p><b>内容：</b><?php echo $_POST["content"]?></p>    
+		<p><a href="{:url('syntaxhighlighter')}">返回</a></p>
+    </div>
+    <!-- /.row -->
+
+{/block}

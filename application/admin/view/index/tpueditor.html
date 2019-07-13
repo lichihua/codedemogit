@@ -1,0 +1,49 @@
+{extend name="public/base" /}
+
+{block name="title"}tpueditor{/block}
+{block name="pagetitle"}tpueditor{/block}
+{block name="pagecss"}
+    <!-- CSS -->
+    <link type="text/css" href="" rel="stylesheet">
+
+{/block}
+{block name="pagejs"}
+    <!-- 配置文件 -->
+    <script type="text/javascript" src="__VENDOR__/ueditor/ueditor.config.js"></script>
+    <!-- 编辑器源码文件 -->
+    <script type="text/javascript" src="__VENDOR__/ueditor/ueditor.all.js"></script>
+   <!--  可选 编辑内容展示 -->
+    <script type="text/javascript" src="__VENDOR__/ueditor/ueditor.parse.min.js"></script>
+{/block}
+
+{block name="customjs"} 
+<script>
+	$(function(){
+		//获取当前窗口的主机名
+		var host = window.location.host;
+		var url=host+"/admin/index/tpueditorAdmin";
+		//host+"/admin/index/tpueditor"
+	    var ue = UE.getEditor('container',{
+	        serverUrl :url
+	    });
+	})
+</script>
+
+{/block}
+
+{block name="main"}
+	
+    <!-- /.row -->
+    <div class="row">
+	        <form action="http://www.codedemogit.com/index.php/sbadminiframe/index/index.html" method="post">
+	            <!-- 加载编辑器的容器 -->
+	            <script id="container" name="content" type="text/plain">
+	                这里写你的初始化内容
+	            </script>
+
+	            <input type="submit" name="确认">  
+	        </form>
+    </div>
+    <!-- /.row -->
+
+{/block}
