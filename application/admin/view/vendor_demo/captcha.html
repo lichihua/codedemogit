@@ -1,0 +1,36 @@
+{extend name="public/base" /}
+
+{block name="title"}captcha{/block}
+{block name="pagetitle"}captcha验证码{/block}
+{block name="pagecss"}
+    <!-- CSS -->
+    <script type="text/javascript" src="__VENDOR__/tinymce/tinymce.min.js"></script>
+
+{/block}
+{block name="pagejs"}
+    <!-- JavaScript -->
+    <script type="text/javascript" src="__VENDOR__/tinymce/tinymce.min.js"></script>
+    <script type="text/javascript" src="__ADMIN__/..."></script>
+{/block}
+
+{block name="customjs"} 
+    <script>
+    // 刷新验证码
+    function reloadcode(obj) {
+        obj.src="/captcha?id="+Math.random();
+    }
+    </script>
+
+{/block}
+
+{block name="main"}
+	
+    <!-- /.row -->
+    <div class="row">
+    	<img src="/captcha" alt="点击更新验证码" onclick="reloadcode(this)"/>
+    </div>
+    <!-- 或者 -->
+    <div>{:captcha_img()}</div>
+    <!-- /.row -->
+    <div><code>验证只需：captcha_check($_POST['code'])</code></div>
+{/block}

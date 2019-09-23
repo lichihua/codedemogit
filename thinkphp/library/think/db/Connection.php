@@ -134,7 +134,7 @@ abstract class Connection
         if (!empty($config)) {
             $this->config = array_merge($this->config, $config);
         }
-        dump($this->config);
+       
     }
 
     /**
@@ -145,7 +145,7 @@ abstract class Connection
     protected function getQuery()
     {
         $class = $this->config['query'];
-        dump($class);
+
         return new $class($this);
     }
 
@@ -172,7 +172,6 @@ abstract class Connection
      */
     public function __call($method, $args)
     {
-        dump($method);
         return call_user_func_array([$this->getQuery(), $method], $args);
     }
 

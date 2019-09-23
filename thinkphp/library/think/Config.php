@@ -40,7 +40,7 @@ class Config
      * 解析配置文件或内容
      * @access public
      * @param  string $config 配置文件路径或内容
-     * @param  string $type   配置解析类型
+     * @param  string $type   配置解析类型 如  php   ini 
      * @param  string $name   配置名（如设置即表示二级配置）
      * @param  string $range  作用域
      * @return mixed

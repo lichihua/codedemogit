@@ -4,13 +4,45 @@ use think\Controller;
 use think\loader;
 class Index extends Controller
 {
+    
     public function index()
     {
+
         return $this->fetch();
+
+    }
+    
+    public function index2()
+    {   
+        // 根据不同系统取得CPU相关信息
+        switch(PHP_OS)
+        {
+            case "Linux":
+                $sysReShow = (false !== ($sysInfo = sys_linux()))?"show":"none";
+            break;
+            
+            case "FreeBSD":
+                $sysReShow = (false !== ($sysInfo = sys_freebsd()))?"show":"none";
+            break;
+            
+        /*  
+            case "WINNT":
+                $sysReShow = (false !== ($sysInfo = sys_windows()))?"show":"none";
+            break;
+        */  
+            
+            default:
+            break;
+        }
+
+
+        return $this->fetch('',[
+            //'sysInfo'=>$sysInfo,
+            'pageTotal'=>"dash",
+        ]);          
     }
 
-
-    public function tempmange(){
+    public function tempmange(){      
         return $this->fetch();
     }
 
@@ -96,7 +128,7 @@ class Index extends Controller
     	return $this->fetch();
     }
     public function showsyntaxsighlighter(){
-    	dump($_POST);
+    	
     	return $this->fetch();
     }
     public function prismjs(){
@@ -234,7 +266,7 @@ class Index extends Controller
     }
     /*执行分片与断点续传*/ 
     public function doUpload(){
-    	dump($_POST);
+    	//dump($_POST);
 		//$name=$_POST['username'];  
 		$dir=$_POST['filename'];  
 		$dir=ROOT_PATH."public".DS."uploads".DS.md5($dir);  
@@ -749,8 +781,8 @@ class Index extends Controller
         $this->assign('arr',$arr);                 
                     
         $a=request()->isAjax();
-        dump($a);
-        dump($_POST);
+        //dump($a);
+        //dump($_POST);
         return $this->fetch();
     }
 
